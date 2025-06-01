@@ -3,13 +3,13 @@ import { pregRespMod } from "@models/pregRespMod.model";
 export const hg02Preguntas: pregRespMod[] = [
   {
     codigo: 'HG02',
-    pregunta: '¿Qué son los hipoglucemiantes?  ¿Que remedios son los que bajan el azúcar?',
+    pregunta: '¿Qué son los hipoglucemiantes?  ¿Qué remedios son los que bajan el azúcar?',
     respuesta: 'Los hipoglucemiantes son medicamentos que ayudan a reducir los niveles de \
 azúcar en la sangre. Pueden ser en pastillas o insulina, y se usan principalmente en personas con diabetes tipo 2.',
   },
   {
     codigo: 'HG02',
-    pregunta: '¿Qué son los hipoglucemiantes orales y para qué se utilizan? ¿Que son los remedios para bajar el azucar y cuales se utilizan?',
+    pregunta: '¿Qué son los hipoglucemiantes orales y para qué se utilizan? ¿Qué son los remedios para bajar el azucar y cuales se utilizan?',
     respuesta: 'Son medicamentos utilizados para tratar la diabetes mellitus, ayudando a reducir los niveles de \
 glucosa en sangre mediante distintos mecanismos como el aumento de la sensibilidad a la insulina, la reducción \
 de la producción hepática de glucosa o la estimulación de la secreción de insulina. ',
@@ -38,14 +38,14 @@ o en casos avanzados de DM2 donde la producción pancreática es insuficiente.',
   },
   {
     codigo: 'HG02',
-    pregunta: '¿Los hipoglucemiantes orales curan la diabetes?  ¿Los medicamentos que me tomo para la bajar el azucar me curan la diabetes?',
+    pregunta: '¿Los hipoglucemiantes orales curan la diabetes?  ¿Los medicamentos qué me tomo para la bajar el azúcar me curan la diabetes?',
     respuesta: 'No, estos medicamentos no curan la diabetes, pero ayudan a controlar los niveles de glucosa en sangre y a prevenir \
 complicaciones. El manejo de la enfermedad también requiere cambios en el estilo de vida, como una alimentación saludable y \
 actividad física regular. ',
   },
   {
     codigo: 'HG02',
-    pregunta: '¿Cual es el horario de administracion?  ¿A que hora me puedo tomar estas pastillas?',
+    pregunta: '¿Cuál es el horario de administracion?  ¿A qué hora me puedo tomar estas pastillas?',
     respuesta: 'El horario varía según el medicamento. Algunos hipoglucemiantes orales, como la metformina, se administran con \
 las comidas para evitar efectos secundarios. Siempre debes seguir el esquema indicado por el profesional de salud',
   },

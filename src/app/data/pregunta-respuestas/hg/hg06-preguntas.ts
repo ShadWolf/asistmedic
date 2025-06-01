@@ -23,7 +23,7 @@ complicaciones.',
   },
   {
     codigo: 'HG06',
-    pregunta: '¿Cómo puedo reconocer una hiperglucemia y qué debo hacer? ¿Como me doy cuenta que se me subió el azúcar?',
+    pregunta: '¿Cómo puedo reconocer una hiperglucemia y qué debo hacer? ¿Cómo me doy cuenta que se me subió el azúcar?',
     respuesta: 'Si tiene síntomas como sed excesiva, orina con frecuencia, visión borrosa \
 o fatiga, puede que su nivel de azúcar esté muy alto. En este caso, mida su nivel de glucosa \
 y siga las indicaciones de su médico. Si el azúcar en sangre es muy alto y síntomas graves, \

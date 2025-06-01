@@ -8,17 +8,17 @@ export const sc06Preguntas: pregRespMod[] = [
   },
   {
     codigo: 'SC06',
-    pregunta: '- ¿Cuál es la finalidad de la política nacional de apoyos y cuidados? - ¿Para qué sirve la política nacional de apoyos y cuidados? - ¿Cuál es el objetivo de la política nacional de apoyos y cuidados?',
-    respuesta: 'Esta nueva política tiene como objetivo poder asistir y apoyar a las personas cuidadoras que lo requieran, así como de reconocer, reducir y redistribuir el trabajo de cuidados desde una perspectiva de derechos humanos, de género, interseccional e intercultural.\n\nDentro de los objetivos de esta la politica se destacan:\n\n- Mejorar el bienestar de personas cuidadoras y personas dependientes.\n- Reconociendo el trabajo de cuidados.\n- Promover la autonomía y redistribuyendo las responsabilidades en la sociedad.'
+    pregunta: '¿Cuál es la finalidad de la política nacional de apoyos y cuidados? ¿Para qué sirve la política nacional de apoyos y cuidados? ¿Cuál es el objetivo de la política nacional de apoyos y cuidados?',
+    respuesta: 'Esta nueva política tiene como objetivo poder asistir y apoyar a las personas cuidadoras que lo requieran, así como de reconocer, reducir y redistribuir el trabajo de cuidados desde una perspectiva de derechos humanos, de género, interseccional e intercultural.\n\nDentro de los objetivos de esta la politica se destacan:\n\nMejorar el bienestar de personas cuidadoras y personas dependientes.\nReconociendo el trabajo de cuidados.\nPromover la autonomía y redistribuyendo las responsabilidades en la sociedad.'
   },
   {
     codigo: 'SC06',
-    pregunta: '- ¿Qué personas pueden acceder a esta nueva política de apoyos y cuidados? - ¿A quién va dirigida esta política de cuidados?',
-    respuesta: 'Las personas que están consideradas dentro de la nueva política son:\n\n- Personas con dependencia.\n- Niños, niñas y adolescentes.\n- Personas con discapacidad.\n- Personas mayores.\n- Personas cuidadoras no remuneradas y remuneradas.'
+    pregunta: '¿Qué personas pueden acceder a esta nueva política de apoyos y cuidados? ¿A quién va dirigida esta política de cuidados?',
+    respuesta: 'Las personas que están consideradas dentro de la nueva política son:\n\nPersonas con dependencia.\nNiños, niñas y adolescentes.\nPersonas con discapacidad.\nPersonas mayores.\nPersonas cuidadoras no remuneradas y remuneradas.'
   },
   {
     codigo: 'SC06',
     pregunta: '¿Qué se espera lograr con esta política de apoyos y cuidados?',
-    respuesta: 'Esta politica tiene como objetivos estratégicos lograr:\n\n- Aumentar la cobertura, acceso y pertinencia de los programas públicos de apoyos y cuidados.\n- Fortalecer la coordinación de las instituciones que prestan servicios de apoyos y cuidados.\n- Promover el trabajo decente y la formalización de las personas cuidadoras remuneradas.\n- Promover la corresponsabilidad social y de género y visibilizar el trabajo de cuidados no remunerado.\n- Promover la autonomía de las personas cuidadoras y de quienes reciben apoyos y cuidados.\n- Asegurar la calidad y equidad de la oferta de apoyos y cuidados a través de su monitoreo y evaluación continua.'
+    respuesta: 'Esta politica tiene como objetivos estratégicos lograr:\n\nAumentar la cobertura, acceso y pertinencia de los programas públicos de apoyos y cuidados.\nFortalecer la coordinación de las instituciones que prestan servicios de apoyos y cuidados.\nPromover el trabajo decente y la formalización de las personas cuidadoras remuneradas.\nPromover la corresponsabilidad social y de género y visibilizar el trabajo de cuidados no remunerado.\nPromover la autonomía de las personas cuidadoras y de quienes reciben apoyos y cuidados.\nAsegurar la calidad y equidad de la oferta de apoyos y cuidados a través de su monitoreo y evaluación continua.'
   }
 ];

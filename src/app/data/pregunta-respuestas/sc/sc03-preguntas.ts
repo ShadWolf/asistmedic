@@ -8,12 +8,12 @@ export const sc03Preguntas: pregRespMod[] = [
   },
   {
     codigo: 'SC03',
-    pregunta: '- ¿Cuáles son las modalidades para realizar el tramite para el programa de ayuda en pañales y leche de la Municipalidad de Renca? - ¿De que manera puedo realizar el trámite para el programa de ayuda en pañales y leche de la Municipalidad de Renca?',
+    pregunta: '¿Cuáles son las modalidades para realizar el tramite para el programa de ayuda en pañales y leche de la Municipalidad de Renca? ¿De qué manera puedo realizar el trámite para el programa de ayuda en pañales y leche de la Municipalidad de Renca?',
     respuesta: 'La modalidad es únicamente presencial. Debe dirigirse al departamento de ayudas sociales del municipio para solicitar la información.'
   },
   {
     codigo: 'SC03',
-    pregunta: '- ¿Cuál es la documentacion requerida para postular al programa de ayuda de pañales y leche de la Municipalidad de Renca? - ¿Qué papeles necesito para postular al programa de ayuda de pañales y leche de la Municipalidad de Renca?',
+    pregunta: '¿Cuál es la documentacion requerida para postular al programa de ayuda de pañales y leche de la Municipalidad de Renca? ¿Qué papeles necesito para postular al programa de ayuda de pañales y leche de la Municipalidad de Renca?',
     respuesta: 'La documentación requerida para postular es la siguiente:\n-Cédula de identidad.\n-Carnet del programa Postrado.\n-Certificado médico al día.\n-Comprobante de pago de pensión y/o liquidaciones de sueldo.\n'
   },
   {

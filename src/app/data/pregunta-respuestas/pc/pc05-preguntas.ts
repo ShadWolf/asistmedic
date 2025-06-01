@@ -12,13 +12,4 @@ export const pc05Preguntas: pregRespMod[] = [
     para mejor visibilidad del paciente. '
 
   }
-
-  /*
-   {
-    codigo: 'PC05',
-    pregunta: '',
-    respuesta: ''
-  }
-
-  */
 ];

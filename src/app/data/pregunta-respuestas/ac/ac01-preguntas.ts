@@ -27,7 +27,7 @@ Enoxaparina: Inmediata. \n',
   },
   {
     codigo: 'AC01',
-    pregunta: '¿Que es el INR?',
+    pregunta: '¿Qué es el INR?',
     respuesta: 'El INR (Razón Internacional Normalizada) es un examen que mide el tiempo que tarda la sangre en coagular.  \
 Se usa principalmente en personas que toman anticoagulantes como la warfarina para asegurarse de que el tratamiento esté en el nivel adecuado.',
   }

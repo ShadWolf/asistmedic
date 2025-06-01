@@ -12,14 +12,14 @@ insulina, que varían en la rapidez con que actúan y la duración de su efecto.
   },
   {
     codigo: 'HG03',
-    pregunta: '¿Qué tipos de insulina existen? ¿Cuantas insulinas hay?',
+    pregunta: '¿Qué tipos de insulina existen? ¿Cuántas insulinas hay?',
     respuesta: 'Insulina rápida o ultrarrápida: actúa en pocos minutos, se usa habitualmente \
 antes de las comidas. Insulina intermedia: comienza a actuar en 1-2 horas y dura hasta 12 horas. \
 Insulina de acción prolongada: mantiene niveles estables de glicemia durante el día o la noche.',
   },
   {
     codigo: 'HG03',
-    pregunta: '¿Qué diferencia una insulina rapida de una lenta?',
+    pregunta: '¿Qué diferencia una insulina rápida de una lenta?',
     respuesta: 'La insulina rápida es la que actúa en minutos, controlando los niveles de azúcar \
 poco después de la aplicación. En cambio, la insulina lenta tiene un efecto más prolongado y se \
 utiliza para mantener los niveles de azucar en el tiempo.',
