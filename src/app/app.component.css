@@ -11,52 +11,59 @@ body {
 }
 
 /* Estilos para la tarjeta de Angular Material */
+/* Estilos para la tarjeta de Angular Material */
 .asistente-card {
   max-width: 800px;
-  /* Ancho máximo de la tarjeta */
   margin: 20px auto;
-  /* Centrar la tarjeta horizontalmente */
   padding: 24px;
-  /* Espaciado interno de la tarjeta */
   text-align: center;
-  /* Centrar el texto dentro de la tarjeta */
   border-radius: 12px;
-  /* Bordes redondeados */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  /* Sombra más pronunciada */
   background-color: white;
-  /* Fondo de la tarjeta blanco, no azul */
   border-bottom: 4px solid #1a73e8;
-  /* Borde inferior azul (similar al anterior) */
 }
 
-/* Estilos para el contenedor del logo */
+/* **NUEVO:** Estilos para la cabecera de la tarjeta mat-card-header */
+.asistente-card-header {
+  display: flex;
+  /* Habilitar flexbox */
+  flex-direction: column;
+  /* ¡Alinear los elementos en columna! (logo arriba, título abajo) */
+  align-items: center;
+  /* Centrar los elementos horizontalmente */
+  padding-bottom: 16px;
+  /* Añadir un poco de espacio entre la cabecera y el contenido si es necesario */
+}
+
+/* **NUEVO:** Estilos para el contenedor de los logos para que estén lado a lado */
 .logo-container {
+  display: flex;
+  /* Habilitar flexbox para los logos */
+  justify-content: center;
+  /* Centrar los logos horizontalmente */
+  align-items: center;
+  /* Alinear verticalmente si tienen alturas diferentes */
+  gap: 20px;
+  /* Espacio entre los logos */
   margin-bottom: 24px;
-  /* Espacio debajo del logo */
+  /* Espacio debajo del contenedor de logos */
+  width: 100%;
+  /* Ocupar todo el ancho disponible para centrar bien */
 }
 
-/* Estilos para el logo */
+/* Estilos para el logo (aplicado a cada imagen) */
 .asistente-logo {
   height: 96px;
-  /* Altura del logo para pantallas medianas/grandes */
   width: auto;
-  /* Ancho automático para mantener proporción */
-  display: block;
-  /* Para centrar con margin: auto */
-  margin: 0 auto;
-  /* Centrar el logo */
+  /* `display: block;` y `margin: 0 auto;` no son necesarios aquí si `logo-container` es flex */
   border-radius: 8px;
-  /* Bordes redondeados para el logo */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Sombra suave para el logo */
 }
 
 /* Estilos para pantallas pequeñas (móviles) */
 @media (max-width: 768px) {
   .asistente-logo {
     height: 72px;
-    /* Altura más pequeña en móviles */
   }
 }
 

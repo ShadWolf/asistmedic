@@ -15,4 +15,5 @@ import { MenuDeroulantComponent } from './components/menu-deroulant/menu-deroula
 export class AppComponent {
   title = 'asistmedic';
   logoSrc: string = 'assets/logo.jpg';
+  logoUssSrc: string = 'assets/logo-uss.png';
 }
