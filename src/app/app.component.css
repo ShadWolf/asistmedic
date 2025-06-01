@@ -1,0 +1,211 @@
+body {
+  font-family: 'Inter', sans-serif;
+  /* Fuente Inter */
+  background-color: #e0f2f7;
+  /* Color azul pastel claro */
+  color: #333;
+  /* Color de texto principal */
+  margin: 0;
+  padding: 20px;
+  /* Padding general para el cuerpo */
+}
+
+/* Estilos para la tarjeta de Angular Material */
+.asistente-card {
+  max-width: 800px;
+  /* Ancho máximo de la tarjeta */
+  margin: 20px auto;
+  /* Centrar la tarjeta horizontalmente */
+  padding: 24px;
+  /* Espaciado interno de la tarjeta */
+  text-align: center;
+  /* Centrar el texto dentro de la tarjeta */
+  border-radius: 12px;
+  /* Bordes redondeados */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* Sombra más pronunciada */
+  background-color: white;
+  /* Fondo de la tarjeta blanco, no azul */
+  border-bottom: 4px solid #1a73e8;
+  /* Borde inferior azul (similar al anterior) */
+}
+
+/* Estilos para el contenedor del logo */
+.logo-container {
+  margin-bottom: 24px;
+  /* Espacio debajo del logo */
+}
+
+/* Estilos para el logo */
+.asistente-logo {
+  height: 96px;
+  /* Altura del logo para pantallas medianas/grandes */
+  width: auto;
+  /* Ancho automático para mantener proporción */
+  display: block;
+  /* Para centrar con margin: auto */
+  margin: 0 auto;
+  /* Centrar el logo */
+  border-radius: 8px;
+  /* Bordes redondeados para el logo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Sombra suave para el logo */
+}
+
+/* Estilos para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .asistente-logo {
+    height: 72px;
+    /* Altura más pequeña en móviles */
+  }
+}
+
+/* Estilos para el título principal */
+.asistente-title {
+  font-size: 2.2em;
+  /* Tamaño de fuente grande */
+  font-weight: 700;
+  /* Negrita */
+  margin-bottom: 16px;
+  /* Espacio debajo del título */
+  color: #2c3e50;
+  /* Color oscuro para el texto del título */
+}
+
+/* Estilos para el nombre del hospital (resaltado) */
+.hospital-name {
+  font-weight: 800;
+  /* Más negrita */
+  color: #e6b800;
+  /* Amarillo dorado para resaltar */
+}
+
+/* Estilos para el contenido de la tarjeta (párrafos) */
+.asistente-content p {
+  font-size: 1.1em;
+  /* Tamaño de fuente para párrafos */
+  line-height: 1.6;
+  /* Altura de línea para legibilidad */
+  margin-bottom: 12px;
+  /* Espacio entre párrafos */
+  color: #555;
+  /* Color de texto ligeramente más claro */
+}
+
+/* Estilos para el llamado a la acción */
+.asistente-call-to-action {
+  font-size: 1.3em;
+  /* Tamaño de fuente más grande para la llamada a la acción */
+  font-weight: 600;
+  /* Seminegrita */
+  margin-top: 20px;
+  /* Espacio superior */
+  color: #1a73e8;
+  /* Color azul para la llamada a la acción */
+}
+
+/* Estilos para el texto resaltado dentro del llamado a la acción */
+.highlight-text {
+  font-weight: 800;
+  /* Extra negrita */
+  color: #007bff;
+  /* Azul vibrante */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  /* Sombra de texto suave */
+}
+
+/* Estilos para la sección de entrada de usuario */
+.input-section {
+  max-width: 800px;
+  /* Ancho máximo */
+  margin: 20px auto;
+  /* Centrar */
+  padding: 20px;
+  /* Espaciado interno */
+  background-color: white;
+  /* Fondo blanco */
+  border-radius: 12px;
+  /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra */
+}
+
+.input-label {
+  display: block;
+  /* Etiqueta en su propia línea */
+  font-size: 1.1em;
+  /* Tamaño de fuente */
+  font-weight: 600;
+  /* Negrita */
+  color: #333;
+  /* Color de texto */
+  margin-bottom: 10px;
+  /* Espacio debajo de la etiqueta */
+}
+
+.input-textarea {
+  width: 100%;
+  /* Ancho completo */
+  padding: 12px;
+  /* Espaciado interno */
+  border: 1px solid #ccc;
+  /* Borde gris */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  font-size: 1em;
+  /* Tamaño de fuente */
+  line-height: 1.5;
+  /* Altura de línea */
+  resize: vertical;
+  /* Permitir redimensionar verticalmente */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  /* Transición suave */
+}
+
+.input-textarea:focus {
+  outline: none;
+  /* Quitar el contorno al enfocar */
+  border-color: #007bff;
+  /* Borde azul al enfocar */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  /* Sombra de enfoque */
+}
+
+.send-button {
+  display: block;
+  /* Botón en su propia línea */
+  width: 100%;
+  /* Ancho completo */
+  margin-top: 20px;
+  /* Espacio superior */
+  background-color: #007bff;
+  /* Fondo azul */
+  color: white;
+  /* Texto blanco */
+  font-size: 1.1em;
+  /* Tamaño de fuente */
+  font-weight: 700;
+  /* Negrita */
+  padding: 12px 20px;
+  /* Espaciado interno */
+  border: none;
+  /* Sin borde */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  cursor: pointer;
+  /* Cursor de puntero */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  /* Transiciones suaves */
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+  /* Azul más oscuro al pasar el ratón */
+  transform: translateY(-2px);
+  /* Pequeño efecto de elevación */
+}
+
+.send-button:active {
+  transform: translateY(0);
+  /* Vuelve a la posición normal al hacer clic */
+}
