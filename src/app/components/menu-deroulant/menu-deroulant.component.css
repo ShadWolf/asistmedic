@@ -17,6 +17,10 @@
       min-width: 90%;
       margin: 2%;
   }
+  .content-first-categoria {
+    display: flex !important;
+    flex-direction: column !important;
+  }
 }
 .categoria-button:hover {
   background-color: #cce5ff;
@@ -179,17 +183,12 @@
   /* Centra el contenedor */
 }
 
-.button-row {
+
+.content-first-categoria{
   display: flex;
-  flex-wrap: wrap;
-  /* Permite que los botones pasen a la siguiente línea si no caben */
-  gap: 3%;
-  /* Espacio entre los botones en la fila */
+  flex-direction: row;
+  gap: 4%;
   justify-content: center;
-  /* Centra los botones en la fila */
-  border: 1px dashed #e0e0e0;
-  padding: 10px;
-  border-radius: 5px;
 }
 
 .button-column-container {
@@ -203,4 +202,19 @@
   border: 1px dashed #e0e0e0;
   padding: 10px;
   border-radius: 5px;
+}
+
+.box-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #333;
+  padding: 10px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }

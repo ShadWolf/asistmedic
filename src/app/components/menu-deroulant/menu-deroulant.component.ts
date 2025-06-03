@@ -10,7 +10,6 @@ import { subCatMod } from '@models/subCatMod.model';
 import { categorias } from '@data/categorias';
 import { subCategoriasDetalles } from '@data/subCategoriasDetalles';
 import { preguntasRespuestas } from '@data/pregunta-respuestas/';
-import { categoriasSalud } from '@app/data/catergoriasSalud';
 
 @Component({
   selector: 'app-menu-deroulant',
@@ -25,12 +24,10 @@ export class MenuDeroulantComponent implements OnInit {
 
 
   todasLasCategorias: categoriasMod[] = categorias;
-  todasLasCategoriasSalud: categoriasMod[] = categoriasSalud;
   todosLosDetallesDeSubCategorias: subCatMod[] = subCategoriasDetalles;
   todasLasPreguntasRespuestas: pregRespMod[] = preguntasRespuestas;
 
   botonActivo: string | null = null;
-  // Mantiene un registro de la categoría principal activa
   categoriaPrincipalActiva: string | null = null;
   categoriaSaludPrincipalActiva: string | null = null;
 
@@ -91,29 +88,15 @@ export class MenuDeroulantComponent implements OnInit {
       this.preguntasAMostrar = []; // Limpia las preguntas anteriores
       this.preguntaActiva = null; // Limpia la pregunta activa
       this.respuestaSeleccionada = null; // Limpia la respuesta
-      if (nombreCategoria == 'Salud') {
-        this.saludActiva = true;
-      } else {
-        if (this.saludActiva) { // Necesitas una variable de estado para el estado actual de saludActiva
-          if (nombreCategoria == "Prevención de caídas" || nombreCategoria == "Apoyo Social") {
-            this.saludActiva = false;
-            this.categoriaPrincipalActiva = nombreCategoria;
-            categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
-          } else {
-            this.categoriaSaludPrincipalActiva = nombreCategoria
-            categoriaSeleccionada = this.todasLasCategoriasSalud.find(cat => cat.nombre === nombreCategoria);
+      this.saludActiva = true;
 
-          }
-        } else {
-          categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
-        }
-        if (categoriaSeleccionada) {
-          this.subCategoriasAMostrar = this.todosLosDetallesDeSubCategorias.filter(subCat =>
-            categoriaSeleccionada.subCategorias.includes(subCat.codigo)
-          );
-        } else {
-          this.subCategoriasAMostrar = [];
-        }
+      categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
+      if (categoriaSeleccionada) {
+        this.subCategoriasAMostrar = this.todosLosDetallesDeSubCategorias.filter(subCat =>
+          categoriaSeleccionada.subCategorias.includes(subCat.codigo)
+        );
+      } else {
+        this.subCategoriasAMostrar = [];
       }
     }
     console.log('Categoría principal activa:', this.categoriaPrincipalActiva);
