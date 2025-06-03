@@ -135,12 +135,47 @@ export const subCategoriasDetalles: subCatMod[] = [
     titulo: 'DERECHO CIVIL - ÁREA SALUD MENTAL',
     descripcion: '',
     codigo: 'SC09'
+  },
+  {
+    titulo: 'Precausiones en el uso de analgésicos',
+    descripcion: '',
+    codigo: 'AN01'
+  },
+  {
+    titulo: 'Terapias alternativas ',
+    descripcion: 'Terapias alternativas para el dolor',
+    codigo: 'AN02'
+  },
+  {
+    titulo: 'Conceptos Generales',
+    descripcion: '',
+    codigo: 'AN03'
+  },
+  {
+    titulo: 'Conceptos generales de una SNG',
+    descripcion: '',
+    codigo: 'SG01'
+  },
+  {
+    titulo: 'Cuidados preventivos',
+    descripcion: 'Cuidados preventivos de una Sonda Nasogástrica',
+    codigo: 'SG02'
+  },
+  {
+    titulo: 'Alimentación y medicamentos',
+    descripcion: '',
+    codigo: 'SG03'
+  },
+  {
+    titulo: 'Qué hacer si??',
+    descripcion: '',
+    codigo: 'SG04'
   }
 
 ];
 /*
    {
     titulo: '',
-    descrpcion: '',
+    descripcion: '',
     codigo: ''
   }*/

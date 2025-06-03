@@ -1,16 +1,21 @@
 <div class="container">
-
   <div class="button-row">
     <button *ngFor="let categoria of todasLasCategorias" [class.activo]="esCategoriaPrincipalActiva(categoria.nombre)"
       (click)="onClickCategoriaPrincipal(categoria.nombre)" class="categoria-button" #botonCategorias>
       {{categoria.icono}} {{ categoria.nombre }}
     </button>
   </div>
-
+  <div class="button-row" *ngIf="saludActiva">
+    <button *ngFor="let categoria of todasLasCategoriasSalud"
+      [class.activo]="esCategoriaSaludPrincipalActiva(categoria.nombre)"
+      (click)="onClickCategoriaPrincipal(categoria.nombre)" class="categoria-button" #botonCategorias>
+      {{categoria.icono}} {{ categoria.nombre }}
+    </button>
+  </div>
   <div class=" content-display-column">
     <ng-container *ngIf="categoriaPrincipalActiva">
-      <h2>Contenido de {{ categoriaPrincipalActiva }}</h2>
-
+      <h2 *ngIf="!saludActiva">Contenido de {{ categoriaPrincipalActiva }} </h2>
+      <h2 *ngIf="saludActiva">Contenido de {{ categoriaPrincipalActiva }} / {{categoriaSaludPrincipalActiva}} </h2>
       <div class="subcategorias-main-container">
         <h4>¿Qué tema deseas profundizar?:</h4>
 

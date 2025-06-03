@@ -6,6 +6,9 @@ import { ac04Preguntas } from "./ac/ac04-preguntas";
 import { ac05Preguntas } from "./ac/ac05-preguntas";
 import { ac06Preguntas } from "./ac/ac06-preguntas";
 import { ac07Preguntas } from "./ac/ac07-preguntas";
+import { an01Preguntas } from "./an/an01-preguntas";
+import { an02Preguntas } from "./an/an02-preguntas";
+import { an03Preguntas } from "./an/an03-preguntas";
 import { hg01Preguntas } from "./hg/hg01-preguntas";
 import { hg02Preguntas } from "./hg/hg02-preguntas";
 import { hg03Preguntas } from "./hg/hg03-preguntas";
@@ -26,6 +29,10 @@ import { sc06Preguntas } from "./sc/sc06-preguntas";
 import { sc07Preguntas } from "./sc/sc07-preguntas";
 import { sc08Preguntas } from "./sc/sc08-preguntas";
 import { sc09Preguntas } from "./sc/sc09-preguntas";
+import { sg01Preguntas } from "./sg/sg01-preguntas";
+import { sg02Preguntas } from "./sg/sg02-preguntas";
+import { sg03Preguntas } from "./sg/sg03-preguntas";
+import { sg04Preguntas } from "./sg/sg04-preguntas";
 
 export const preguntasRespuestas: pregRespMod[] = [
   ...ac01Preguntas,
@@ -56,5 +63,12 @@ export const preguntasRespuestas: pregRespMod[] = [
   ...sc06Preguntas,
   ...sc07Preguntas,
   ...sc08Preguntas,
-  ...sc09Preguntas
+  ...sc09Preguntas,
+  ...an01Preguntas,
+  ...an02Preguntas,
+  ...an03Preguntas,
+  ...sg01Preguntas,
+  ...sg02Preguntas,
+  ...sg03Preguntas,
+  ...sg04Preguntas,
 ];
