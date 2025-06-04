@@ -29,7 +29,6 @@ export class MenuDeroulantComponent implements OnInit {
 
   botonActivo: string | null = null;
   categoriaPrincipalActiva: string | null = null;
-  categoriaSaludPrincipalActiva: string | null = null;
 
   // Almacenará las subcategorías detalladas a mostrar en la segunda columna
   subCategoriasAMostrar: subCatMod[] = [];
@@ -41,7 +40,6 @@ export class MenuDeroulantComponent implements OnInit {
   preguntaActiva: string | null = null; // Almacenará la `pregunta` activa (o quizás su `codigo` si fuera único)
   respuestaSeleccionada: string | null = null; // Para mostrar la respuesta de la pregunta activa
   interfazActiva: boolean = false;
-  saludActiva: boolean = false;
 
   ngOnInit(): void { }
 
@@ -77,18 +75,14 @@ export class MenuDeroulantComponent implements OnInit {
       this.preguntaActiva = null; // Limpia la pregunta activa
       this.respuestaSeleccionada = null; // Limpia la respuesta
       this.interfazActiva = false;
-      this.saludActiva = false;
     } else {
       // Activa la nueva categoría principal
-      if (!this.saludActiva) {
-        this.categoriaPrincipalActiva = nombreCategoria;
-      }
+      this.categoriaPrincipalActiva = nombreCategoria;
 
       this.subCategoriaActiva = null; // Reinicia la subcategoría activa
       this.preguntasAMostrar = []; // Limpia las preguntas anteriores
       this.preguntaActiva = null; // Limpia la pregunta activa
       this.respuestaSeleccionada = null; // Limpia la respuesta
-      this.saludActiva = true;
 
       categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
       if (categoriaSeleccionada) {
@@ -100,8 +94,6 @@ export class MenuDeroulantComponent implements OnInit {
       }
     }
     console.log('Categoría principal activa:', this.categoriaPrincipalActiva);
-    console.log('Categoría Salud principal activa:', this.categoriaSaludPrincipalActiva);
-    console.log('Salud Activa:', this.saludActiva);
     console.log('Subcategorías a mostrar:', this.subCategoriasAMostrar);
   }
 
@@ -160,9 +152,7 @@ export class MenuDeroulantComponent implements OnInit {
   esCategoriaPrincipalActiva(nombreCategoria: string): boolean {
     return this.categoriaPrincipalActiva === nombreCategoria;
   }
-  esCategoriaSaludPrincipalActiva(nombreCategoria: string): boolean {
-    return this.categoriaSaludPrincipalActiva === nombreCategoria;
-  }
+
   /**
    * Verifica si un botón de subcategoría debe tener la clase 'activo'.
    * @param codigoSubCategoria El código de la subcategoría a verificar.
