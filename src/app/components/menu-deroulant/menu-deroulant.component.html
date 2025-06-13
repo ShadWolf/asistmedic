@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="content-first-categoria">
     <div class="box-container">
       <div class="button-container">
@@ -22,13 +21,11 @@
       </div>
     </div>
   </div>
-
   <div class=" content-display-column">
     <ng-container *ngIf="categoriaPrincipalActiva">
       <h2>Contenido de {{ categoriaPrincipalActiva }} </h2>
       <div class="subcategorias-main-container">
         <h4>¿Qué tema deseas profundizar?:</h4>
-
         <div class="button-column-container">
           <ng-container *ngFor="let subCategoria of subCategoriasAMostrar">
             <button #botonSubCategorias [class.activo]="esSubCategoriaActiva(subCategoria.codigo)"
@@ -36,7 +33,6 @@
               <span class="titulo">{{ subCategoria.titulo }}</span>
               <span class="descripcion">{{ subCategoria.descripcion }}</span>
             </button>
-
             <div *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="preguntas-respuestas-container">
               <h4>Elige tu pregunta: </h4>
               <div class="botones-preguntas-container">
