@@ -29,7 +29,7 @@ export const sc01Preguntas: pregRespMod[] = [
   {
     codigo: 'SC01',
     pregunta: ' ¿Cuáles son las modalidades para realizar la tramitación de la credencial de discapacidad? ¿Cómo puedo realizar el tramite para tener la credencial de discapacidad? - ¿Qué tengo que hacer para conseguir la credencial de discapacidad? - ¿Dónde hago el tramite para sacar la credencial de discapacidad?',
-    respuesta: 'El trámite de la credencial de discapacidad se puede gestionar a través de dos \nmodalidades:\n\nPresencial:\nAcercándose a cualquier oficina del COMPIN mas cercana del domicilio de\nla persona con discapacidad. Los horarios de atencion son de lunes a\nviernes desde las 09:00 am hasta las 14:00 pm.\n\nOnline:\nIngresando a traves del sitio web del COMPIN https://compin.cerofilas.gob.cl/\nIngresando su RUT y Clave Única.'
+    respuesta: 'El trámite de la credencial de discapacidad se puede gestionar a través de dos \nmodalidades:\n\nPresencial:\nAcercándose a cualquier oficina del COMPIN más cercana del domicilio de\nla persona con discapacidad. Los horarios de atencion son de lunes a\nviernes desde las 09:00 am hasta las 14:00 pm.\n\nOnline:\nIngresando a traves del sitio web del COMPIN https://compin.cerofilas.gob.cl/\nIngresando su RUT y Clave Única.'
   },
   {
     codigo: 'SC01',

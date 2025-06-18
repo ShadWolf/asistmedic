@@ -9,14 +9,14 @@ azúcar en la sangre. Pueden ser en pastillas o insulina, y se usan principalmen
   },
   {
     codigo: 'HG02',
-    pregunta: '¿Qué son los hipoglucemiantes orales y para qué se utilizan? ¿Qué son los remedios para bajar el azucar y cuales se utilizan?',
+    pregunta: '¿Qué son los hipoglucemiantes orales y para qué se utilizan? ¿Qué son los remedios para bajar el azúcar y cuales se utilizan?',
     respuesta: 'Son medicamentos utilizados para tratar la diabetes mellitus, ayudando a reducir los niveles de \
 glucosa en sangre mediante distintos mecanismos como el aumento de la sensibilidad a la insulina, la reducción \
 de la producción hepática de glucosa o la estimulación de la secreción de insulina. ',
   },
   {
     codigo: 'HG02',
-    pregunta: '¿Cuáles son los principales tipos de hipoglucemiantes orales? ¿Qué tipo de medicamentos/remedios para bajar el azucar existen o se utilizan?',
+    pregunta: '¿Cuáles son los principales tipos de hipoglucemiantes orales? ¿Qué tipo de medicamentos/remedios para bajar el azúcar existen o se utilizan?',
     respuesta: 'Se dividen en varios grupos según su mecanismo de acción: Biguanidas que reducen la producción de \
 glucosa hepática, Sulfonilureas y Glinidas que estimulan la secreción de insulina, Inhibidores de DPP-4 que prolongan\
  la acción de las incretinas, Inhibidores de SGLT2 que aumentan la eliminación de glucosa en la orina y Tiazolidinedionas\

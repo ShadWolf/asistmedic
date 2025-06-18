@@ -12,7 +12,7 @@ y consulta a un médico si persiste.',
     codigo: 'HG06',
     pregunta: '¿Qué pasa si tomo más dosis de la indicada por error?',
     respuesta: 'Podría causar hipoglucemia severa. Busca atención médica de inmediato \
-y consume algo azucarado si tienes síntomas de hipoglucemia.',
+y consume algo azúcarado si tienes síntomas de hipoglucemia.',
   },
   {
     codigo: 'HG06',

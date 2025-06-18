@@ -8,12 +8,12 @@ export const sg02Preguntas: pregRespMod[] = [
   },
   {
     codigo: 'SG02',
-    pregunta: '¿Con qué frecuencia debo lavar la sonda y como se hace?',
+    pregunta: '¿Con qué frecuencia debo lavar la sonda y cómo se hace?',
     respuesta: 'Debes limpiarla luego de cada administración de alimentos o medicamentos, con agua hervida y tibia, en una jeringa especial para sonda con la cantidad mínima suficiente, de manera que limpie todo el recorrido de la sonda.'
   },
   {
     codigo: 'SG02',
-    pregunta: '¿Como cuido la sonda que tengo en la nariz estando en mi casa?',
+    pregunta: '¿Cómo cuido la sonda que tengo en la nariz estando en mi casa?',
     respuesta: 'Cada vez que vas a tocar la sonda, debes primero lavarte las manos con agua y jabón. Para evitar que la sonda se tape, deberás lavarla (pasar a través de ella con una jeringa agua hervida y fría). Debes cuidar que la sonda no se retire totalmente o se corra unos centímetros, para esto deberás mantenerla bien fija; deberás también evitar que tu familiar se auto retire la sonda. También es importante evitar heridas en el orificio de la nariz donde está puesta la sonda. Limpia los orificios de la nariz con gasa y suero o agua hervida y fría, y mantén la piel hidratada.'
   },
   {

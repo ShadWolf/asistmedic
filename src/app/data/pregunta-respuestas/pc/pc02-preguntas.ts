@@ -13,7 +13,7 @@ export const pc02Preguntas: pregRespMod[] = [
   },
   {
     codigo: 'PC02',
-    pregunta: '¿En qué  partes de la casa debo poner mas iluminación? ¿Qué parte de la casa debe tener más luz?',
+    pregunta: '¿En qué  partes de la casa debo poner más iluminación? ¿Qué parte de la casa debe tener más luz?',
     respuesta: 'Lugares donde camine la mayor cantidad de tiempo como pasillos, baños, escaleras y entradas de la casa.'
   },
   {

@@ -22,14 +22,14 @@ alimentación saludable y ejercicio. Así evitas complicaciones y llevas una vid
   },
   {
     codigo: 'HG01',
-    pregunta: '¿Como debo medir mis niveles de azúcar en casa?   ¿Como mido la azúcar que tengo en sangre?',
+    pregunta: '¿Cómo debo medir mis niveles de azúcar en casa?   ¿Cómo mido la azúcar que tengo en sangre?',
     respuesta: 'Para medir el nivel de azúcar, necesita un glucómetro o también conocido como hemoglucotest.\
 Este dispositivo le permite tomar una pequeña muestra de sangre, generalmente del dedo, y saber en segundos \
-el nivel de azucar en sangre. El médico indicará con qué frecuencia hacerlo.',
+el nivel de azúcar en sangre. El médico indicará con qué frecuencia hacerlo.',
   },
   {
     codigo: 'HG01',
-    pregunta: '¿Cómo utilizo correctamente el glucometro?   ¿Como ocupo la maquina/hemoglucotest para medir la azúcar?',
+    pregunta: '¿Cómo utilizo correctamente el glucómetro?   ¿Cómo ocupo la maquina/hemoglucotest para medir la azúcar?',
     respuesta: '1. Lavarse las manos con agua y jabón  \n 2. Insertar la tira reactiva en el glucómetro \n \
 3. Con una aguja pinchará el costado de la punta de un dedo \n \
 4. Tocar la gota de sangre con el borde de la tira reactiva. \n 5. Esperar el resultado',

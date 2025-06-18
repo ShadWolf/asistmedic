@@ -10,7 +10,7 @@ como las sulfonilureas, se deben tomar antes de las comidas para optimizar su ef
   },
   {
     codigo: 'HG05',
-    pregunta: '¿Qué hago si olvido tomar una dosis de mi medicamento?  ¿Qué hacer si me olvido tomar una pastilla de los medicamentos que bajan el azucar?',
+    pregunta: '¿Qué hago si olvido tomar una dosis de mi medicamento?  ¿Qué hacer si me olvido tomar una pastilla de los medicamentos que bajan el azúcar?',
     respuesta: 'Si olvidas una dosis, tómala tan pronto como lo recuerdes, a menos que esté cerca de la \
 siguiente dosis, en ese caso, sáltala y continúa con el esquema habitual. No se debe duplicar la dosis \
 para compensar la omisión, ya que podría aumentar el riesgo de hipoglucemia.'
@@ -43,9 +43,15 @@ en el embarazo son, Metformina y gliburina que no representan una amenza en el f
   },
   {
     codigo: 'HG05',
-    pregunta: '¿Qué hábitos me ayudan a mejorar el efecto de los hipoglucemiantes',
-    respuesta: 'No siempre. Algunos tienen recubrimiento especial o liberación controlada, y al partirlos \
-pueden perder su efecto'
+    pregunta: ' ¿Es recomendable partir o triturar los hipoglucemiantes orales ?',
+    respuesta: 'No siempre. Algunos tienen recubrimiento especial o liberación controlada, y al partirlos pueden perder su efecto'
+  },
+
+  {
+    codigo: 'HG05',
+    pregunta: '¿Qué hábitos me ayudan a mejorar el efecto de los hipoglucemiantes?',
+    respuesta: 'Realizar ejercicios ayuda a disminuir los niveles de glucosa en sangre, además llevar una dieta \
+saludable baja en azucares procesados y consumo de agua potable permitirá optimizar el tratamiento con hipoglucemiantes.'
   },
   {
     codigo: 'HG05',

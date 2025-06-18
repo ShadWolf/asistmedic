@@ -19,7 +19,7 @@ export const sg01Preguntas: pregRespMod[] = [
   {
     codigo: 'SG01',
     pregunta: '¿Es normal sentir molestias en la garganta o la nariz?',
-    respuesta: 'Es normal, porque tiene un elemento que no forma parte de ud, un elemento extraño a su cuerpo, sin embargo, si las molestias son intensas y no ceden, debe informar al personal a cargo de la hospitalización domiciliaria'
+    respuesta: 'Es normal, porque tiene un elemento que no forma parte de usted, un elemento extraño a su cuerpo, sin embargo, si las molestias son intensas y no ceden, debe informar al personal a cargo de la hospitalización domiciliaria'
   },
   {
     codigo: 'SG01',

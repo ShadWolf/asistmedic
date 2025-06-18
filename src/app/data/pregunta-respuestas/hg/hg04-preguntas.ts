@@ -22,7 +22,7 @@ asegúrese de que está contando bien, si es posible confirme la dosis con otra 
   },
   {
     codigo: 'HG04',
-    pregunta: '¿Qué pasa si me administro más de la dosis indicada?   ¿Qué pasa si me pongo mas insulina de la que me dijo el doctor?',
+    pregunta: '¿Qué pasa si me administro más de la dosis indicada?   ¿Qué pasa si me pongo más insulina de la que me dijo el doctor?',
     respuesta: 'En este caso, es importante actuar rápido. Primero, monitorea tu nivel de azúcar en la sangre con un hemoglucotest. \
 Si el nivel está debajo de 70 mg/dL puede comer o beber algo que contenga azúcar rapidamente, como jugo o chocolate. Pero si tiene \
 síntomas graves de una hipoglicemia (bajo nivel de azúcar en sangre), tales como sudoración excesiva, temblores o confusión, debe \

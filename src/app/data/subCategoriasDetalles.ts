@@ -137,7 +137,7 @@ export const subCategoriasDetalles: subCatMod[] = [
     codigo: 'SC09'
   },
   {
-    titulo: 'Precausiones en el uso de analgésicos',
+    titulo: 'Precauciones en el uso de analgésicos',
     descripcion: '',
     codigo: 'AN01'
   },

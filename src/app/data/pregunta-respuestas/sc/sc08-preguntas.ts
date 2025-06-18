@@ -8,7 +8,7 @@ export const sc08Preguntas: pregRespMod[] = [
   },
   {
     codigo: 'SC08',
-    pregunta: '¿Cómo acceder a la hospitalización domiciliaria? ¿Como entro a la hospitalización domiciliaria?',
+    pregunta: '¿Cómo acceder a la hospitalización domiciliaria? ¿Cómo entro a la hospitalización domiciliaria?',
     respuesta: 'Para solicitar hospitalización domiciliaria, en primer lugar, el médico tratante debe recomendarlo a través de una interconsulta o documento similar. Luego, se requiere el consentimiento escrito del paciente o su familiar/representante legal. Es importante que el paciente esté inscrito en un establecimiento de salud y que su domicilio esté dentro de la zona de cobertura del programa.'
   },
   {

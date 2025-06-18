@@ -1,35 +1,31 @@
 import { pregRespMod } from "../../../models/pregRespMod.model";
 
 export const an02Preguntas: pregRespMod[] = [
-    {
-        codigo: 'AN02',
-        pregunta: '¿Es seguro tomar medicamentos por mucho tiempo?',
-        respuesta: 'Algunos analgésicos pueden causar efectos adversos si se usan prolongadamente, como daño hepático (paracetamol) o problemas gástricos y renales (AINES). Siempre consulta con un médico.'
-    },
-    {
-        codigo: 'AN02',
-        pregunta: '¿Puedo utilizar medicamentos que me recomiendan mis familiares?',
-        respuesta: 'Es importante considerar que no necesariamente el medicamento que le dieron a mi familiar, vecino/a o amiga/o pueda tener el mismo efecto en mi, es por esto, que es importante seguir la indicación con los medicamentos que nos receten los doctores a nosotros, ya que estan preescritos según las necesidades y patologías de cada persona.'
-    },
-    {
-        codigo: 'AN02',
-        pregunta: '¿Qué pasa si no tomo los medicamentos en los horarios indicados?',
-        respuesta: 'Al no tomar los medicamentos en los horarios y dosis indicada por el médico lo unico que se logra es perder la eficacia del fármaco, esto quiere decir que no tendrá efectividad esperada para lograr disminuir el dolor.'
-    },
-    {
-        codigo: 'AN02',
-        pregunta: '¿Si me siento mejor puedo dejar de tomar el medicamento?',
-        respuesta: 'Puede disminuir su efectividad, prolongar el dolor o generar resistencia en algunos casos. Es importante seguir las indicaciones médicas para obtener el máximo beneficio del tratamiento'
-    },
-    {
-        codigo: 'AN02',
-        pregunta: '¿Cuáles son los riesgos de automedicarse?',
-        respuesta: 'Automedicarse puede causar efectos adversos, interacciones peligrosas, resistencia a medicamentos, ocultar enfermedades y generar dependencia.'
-    },
-    {
-        codigo: 'AN02',
-        pregunta: '¿Cuál es síntoma adverso con el uso del tramadol?',
-        respuesta: 'El estreñimiento o dificultad para ir al baño, para prevenirlo, consuma verduras, frutas y alimentos ricos en fibras.'
-    }
-
+  {
+    codigo: 'AN02',
+    pregunta: '¿Existen otros tratamientos no farmacológicos que me ayuden a aliviar mi dolor?',
+    respuesta: 'Sí, algunas opciones incluyen terapia física, ejercicio, acupuntura, terapia \
+psicológica, masajes, calor o frío local y técnicas de relajación como la meditación.'
+  },
+  {
+    codigo: 'AN02',
+    pregunta: '¿El ejercicio puede ayudar a reducir mi dolor ?',
+    respuesta: 'Puede ser una forma no farmacológica para tratar el dolor ya que el cuerpo \
+al estar en movimiento libera endorfinas que son sustancias que alivian el dolor y mejoran el ánimo. Ejercicios suaves como caminar o estiramientos, pueden ayudar.'
+  },
+  {
+    codigo: 'AN02',
+    pregunta: '¿Las hierbas o infusiones sirven para aliviar el dolor de forma efectiva ?',
+    respuesta: 'Algunas hierbas pueden tener propiedades antiinflamatorias y analgésicas leves, pero no reemplazan un tratamiento médico adecuado.'
+  },
+  {
+    codigo: 'AN02',
+    pregunta: 'Si tengo mucho estrés, ¿puede influir en la intensidad de mi dolor ?',
+    respuesta: 'El estrés puede aumentar la intensidad del dolor. Tú cuerpo libera ciertas sustancias que provocan que el dolor se sienta más intenso. Además puede provocar que te enfoques más en el dolor en si lo que puede causar que sea más molesto.'
+  },
+  {
+    codigo: 'AN02',
+    pregunta: 'La respiración profunda puede disminuir el dolor',
+    respuesta: 'Está comprobado que la técnica de respirar profundamente, disminuye el dolor, puede realizarlo de manera lenta, tranquila, respirando por la nariz y botando por la boca.'
+  }
 ];

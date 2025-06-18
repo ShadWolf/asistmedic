@@ -22,7 +22,7 @@ Insulina de acción prolongada: mantiene niveles estables de glicemia durante el
     pregunta: '¿Qué diferencia una insulina rápida de una lenta?',
     respuesta: 'La insulina rápida es la que actúa en minutos, controlando los niveles de azúcar \
 poco después de la aplicación. En cambio, la insulina lenta tiene un efecto más prolongado y se \
-utiliza para mantener los niveles de azucar en el tiempo.',
+utiliza para mantener los niveles de azúcar en el tiempo.',
   },
   {
     codigo: 'HG03',

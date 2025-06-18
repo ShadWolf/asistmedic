@@ -55,8 +55,6 @@ export const preguntasRespuestas: pregRespMod[] = [
   ...pc05Preguntas,
   ...sc01Preguntas,
   ...sc02Preguntas,
-  ...sc01Preguntas,
-  ...sc02Preguntas,
   ...sc03Preguntas,
   ...sc04Preguntas,
   ...sc05Preguntas,

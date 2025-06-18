@@ -2,7 +2,7 @@ import { categoriasMod } from '../models/categoriasMod.model';
 
 export const categorias: categoriasMod[] = [
   {
-    nombre: 'Sonda Nasogastrica',
+    nombre: 'Sonda Nasogástrica',
     subCategorias: ['SG01', 'SG02', 'SG03', 'SG04'],
     icono: '💉👃🥛'
   },
