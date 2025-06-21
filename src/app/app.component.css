@@ -216,3 +216,13 @@ body {
   transform: translateY(0);
   /* Vuelve a la posición normal al hacer clic */
 }
+.footer-box{
+  flex: content;
+  flex-direction: column;
+  padding: 2%;
+}
+@media (max-width: 768px) {
+  .footer-box {
+    padding: 5%;
+  }
+}
