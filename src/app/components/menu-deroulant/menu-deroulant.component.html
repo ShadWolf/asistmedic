@@ -21,7 +21,8 @@
       </div>
     </div>
   </div>
-  <div class=" content-display-column">
+
+  <div class=" content-display-column" #subCategoryContainer>
     <ng-container *ngIf="categoriaPrincipalActiva">
       <h2>Contenido de {{ categoriaPrincipalActiva }} </h2>
       <div class="subcategorias-main-container">
@@ -33,7 +34,13 @@
               <span class="titulo">{{ subCategoria.titulo }}</span>
               <span class="descripcion">{{ subCategoria.descripcion }}</span>
             </button>
-            <div *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="preguntas-respuestas-container">
+
+            <div *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="preguntas-respuestas-container"
+              [class.full-screen-container]="esSubCategoriaActiva(subCategoria.codigo)"
+              [class.large-bold-text]="esSubCategoriaActiva(subCategoria.codigo)">
+              <button *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="close-button" (click)="cerrarVentana()">
+                ← VOLVER
+              </button>
               <h4>Elige tu pregunta: </h4>
               <div class="botones-preguntas-container">
                 <ng-container *ngFor="let pr of preguntasAMostrar">
@@ -42,7 +49,8 @@
                     {{ pr.pregunta }}
                   </button>
 
-                  <div *ngIf="esPreguntaActiva(pr.pregunta)" class="respuesta-area">
+                  <div *ngIf="esPreguntaActiva(pr.pregunta)" class="respuesta-area"
+                    [class.zoom-effect]="esPreguntaActiva(pr.pregunta)">
                     <p #respTexto>{{ pr.respuesta }}</p>
                   </div>
                 </ng-container>
@@ -50,14 +58,11 @@
             </div>
           </ng-container>
         </div>
-
       </div>
     </ng-container>
 
     <div *ngIf="!categoriaPrincipalActiva" class="no-selection-message">
       <p>Selecciona una categoría para ver su contenido.</p>
     </div>
-    <!--
-</div>
--->
   </div>
+</div>

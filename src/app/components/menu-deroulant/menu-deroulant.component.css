@@ -1,4 +1,4 @@
-
+/* Estilos generales para botones de categoría */
 .categoria-button {
   padding: 12px 15px;
   border: 1px solid #007bff;
@@ -12,16 +12,19 @@
   text-align: left;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-@media (max-width: 768px){
+
+@media (max-width: 768px) {
   .categoria-button {
-      min-width: 90%;
-      margin: 2%;
+    min-width: 90%;
+    margin: 2%;
   }
+
   .content-first-categoria {
     display: flex !important;
     flex-direction: column !important;
   }
 }
+
 .categoria-button:hover {
   background-color: #cce5ff;
   border-color: #0056b3;
@@ -33,7 +36,6 @@
   border-color: #0056b3;
   box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
 }
-
 
 /* Estilos para el mensaje cuando no hay nada seleccionado */
 .no-selection-message {
@@ -62,6 +64,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  /* Espacio entre los elementos (botones) */
   margin-bottom: 20px;
   /* Espacio después de cada grupo de botones */
 }
@@ -119,6 +122,12 @@
   margin-top: 15px;
   /* Margen superior para el bloque */
   width: 90%;
+  /* Ancho base */
+  /* padding horizontal adicional para asegurar espacio en modo full-screen */
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  /* Asegura que padding se incluya en el width */
 }
 
 .pregunta-button {
@@ -146,45 +155,60 @@
   box-shadow: 0 2px 4px rgba(255, 193, 7, 0.4);
 }
 
-/* Área de la respuesta */
+/* Área de la respuesta - Aquí están las MODIFICACIONES CLAVE */
 .respuesta-area {
-  background-color: #e0f7fa;
+  /* Estilos base para la caja de la respuesta */
+  background-color: #f0f0f0;
+  /* Un color de fondo claro */
   border: 1px solid #00bcd4;
-  border-radius: 5px;
-  padding: 15px;
-  margin-top: 8px;
-  /* Más pegado al botón de pregunta */
+  border-radius: 8px;
+  /* Bordes redondeados */
+  padding: 25px;
+  /* Relleno interno para la respuesta */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Sombra sutil */
+  box-sizing: border-box;
+  /* Incluye padding y borde en el width */
+
+  /* Separación y centrado */
+  margin-top: 20px;
+  /* Espacio entre la pregunta y la respuesta */
   margin-bottom: 15px;
   /* Espacio antes de la siguiente pregunta/respuesta */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: auto;
+  /* Centra la caja horizontalmente */
+  margin-right: auto;
+  /* Centra la caja horizontalmente */
+
+  /* Ancho inicial - importante para que el zoom lo gestione */
+  width: 90%;
+  /* Ancho base antes del zoom */
+  max-width: 800px;
+  /* Limita el ancho en pantallas muy grandes */
 }
 
 .respuesta-area p {
   color: #34495e;
   font-size: 1em;
-  line-height: 1.5;
+  line-height: 1.6;
+  /* Mejora la legibilidad */
   white-space: pre-wrap;
   margin: 0;
   /* Elimina margen predeterminado del párrafo */
 }
 
-/* nuevo look */
+/* Estilos de layout principal */
 .container {
   display: flex;
   flex-direction: column;
-  /* Organiza las dos secciones (fila y columna) verticalmente */
   gap: 20px;
-  /* Espacio entre la fila y el contenedor de columnas */
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  /* Opcional: para que se vea más compacto */
   margin: 20px auto;
-  /* Centra el contenedor */
 }
 
-
-.content-first-categoria{
+.content-first-categoria {
   display: flex;
   flex-direction: row;
   gap: 4%;
@@ -194,11 +218,8 @@
 .button-column-container {
   display: flex;
   flex-direction: column;
-  /* Organiza los botones verticalmente */
   gap: 10px;
-  /* Espacio entre los botones en la columna */
   align-items: center;
-  /* Centra los botones en la columna horizontalmente */
   border: 1px dashed #e0e0e0;
   padding: 10px;
   border-radius: 5px;
@@ -217,4 +238,60 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* Clases para ocupar toda la ventana (Nivel de Preguntas/Respuestas) */
+.full-screen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: white;
+  /* O el color de fondo de tu app */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  /* Centra el contenido horizontalmente */
+  padding: 20px;
+  /* Padding general para el contenedor de pantalla completa */
+  overflow-y: auto;
+  /* Permite scroll vertical si el contenido excede la altura */
+}
+
+/* Clases para texto grande y grueso (Nivel de Preguntas/Respuestas) */
+.large-bold-text h2,
+.large-bold-text h4,
+.large-bold-text button,
+/* Esto aplica a los botones de preguntas y respuestas */
+.large-bold-text span,
+.large-bold-text p {
+  font-size: 1.8em !important;
+  /* Ajusta según tu necesidad */
+  font-weight: bold !important;
+}
+
+/* Clase para el zoom en el último nivel (respuestas) - MODIFICADO */
+.zoom-effect {
+  transform-origin: center center;
+  /* El zoom se origina desde el centro */
+  transform: scale(1.1);
+  /* Nivel de zoom */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  /* Transición suave */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  /* Sombra más pronunciada al hacer zoom */
+
+  /* Ajuste crucial para que la caja no se desborde al hacer zoom */
+  /* Calcula el ancho máximo para que quepa dentro del viewport con padding */
+  max-width: calc(100vw - 40px);
+  /* 100vw - (20px padding izquierdo + 20px padding derecho del full-screen-container) */
+}
+
+/* Ajusta cómo los botones de preguntas se comportan dentro de su contenedor */
+.botones-preguntas-container button {
+  margin-bottom: 10px;
+  /* Espacio entre los botones de preguntas */
 }

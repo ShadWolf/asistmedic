@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
@@ -20,70 +20,88 @@ import { preguntasRespuestas } from '@data/pregunta-respuestas/';
 })
 export class MenuDeroulantComponent implements OnInit {
 
+  // Referencias a elementos del DOM para control de clics fuera de botones (para cerrar interfaz)
   @ViewChildren('botonCategorias, botonSubCategorias, botonPregResp, respTexto') private excludeButtons!: QueryList<ElementRef>;
 
+  // Referencia al contenedor de subcategorías para el scroll en móviles
+  @ViewChild('subCategoryContainer') subCategoryContainer!: ElementRef;
 
+  // Bandera para detectar si la pantalla es de tamaño móvil
+  isMobile: boolean = false;
+
+  // Datos cargados desde archivos externos
   todasLasCategorias: categoriasMod[] = categorias;
   todosLosDetallesDeSubCategorias: subCatMod[] = subCategoriasDetalles;
   todasLasPreguntasRespuestas: pregRespMod[] = preguntasRespuestas;
 
-  botonActivo: string | null = null;
-  categoriaPrincipalActiva: string | null = null;
+  // Variables de estado para controlar la interfaz de usuario
+  categoriaPrincipalActiva: string | null = null; // Nombre de la categoría principal seleccionada
+  subCategoriasAMostrar: subCatMod[] = []; // Subcategorías filtradas para la segunda columna
+  subCategoriaActiva: string | null = null; // Código de la subcategoría activa
+  preguntasAMostrar: pregRespMod[] = []; // Preguntas/respuestas filtradas
+  preguntaActiva: string | null = null; // Pregunta activa (para mostrar su respuesta)
+  respuestaSeleccionada: string | null = null; // Respuesta actual mostrándose
 
-  // Almacenará las subcategorías detalladas a mostrar en la segunda columna
-  subCategoriasAMostrar: subCatMod[] = [];
+  constructor() {
+    // Inicializa el tamaño de pantalla al cargar el componente
+    this.checkScreenSize();
+    console.log('Constructor: isMobile inicializado a', this.isMobile);
+  }
 
-  // Mantiene un registro del botón de subcategoría activo (para su propio click)
-  subCategoriaActiva: string | null = null; // Almacenará el `codigo` de la subcategoría activa
+  ngOnInit(): void {
+    // ngOnInit se ejecuta después del constructor. Útil para lógica de inicialización adicional.
+  }
 
-  preguntasAMostrar: pregRespMod[] = []; // Contendrá las preguntas/respuestas filtradas
-  preguntaActiva: string | null = null; // Almacenará la `pregunta` activa (o quizás su `codigo` si fuera único)
-  respuestaSeleccionada: string | null = null; // Para mostrar la respuesta de la pregunta activa
-  interfazActiva: boolean = false;
+  // --- Manejo de Eventos del Navegador ---
 
-  ngOnInit(): void { }
+  // Escucha cambios en el tamaño de la ventana para actualizar `isMobile`
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+    console.log('Window resized: isMobile actualizado a', this.isMobile);
+  }
 
+  // Escucha clics en el documento para cerrar la interfaz si se hace clic fuera de los botones
   @HostListener('document:click', ['$event'])
   onClickDoc(event: MouseEvent): void {
+    // Esta lógica solo se activa si hay una categoría principal activa (es decir, la interfaz está expandida)
     if (this.categoriaPrincipalActiva != null) {
       const clickedElement = event.target as HTMLElement;
-      // Comprueba si el clic NO está dentro del botón
       let isClickInsideExcludedButton = false;
 
+      // Itera sobre todos los botones/elementos que deberían mantener la interfaz abierta
       this.excludeButtons.forEach(buttonRef => {
         if (buttonRef.nativeElement.contains(clickedElement)) {
           isClickInsideExcludedButton = true;
+          // Si el clic está dentro de uno de estos elementos, no necesitamos seguir verificando
           return;
         }
       });
 
+      // Si el clic no fue dentro de ninguno de los elementos "excluidos", cierra la interfaz
       if (!isClickInsideExcludedButton) {
-        this.onClickCategoriaPrincipal(this.categoriaPrincipalActiva); //reset interfaz
+        this.cerrarVentana(); // Usa la función de cierre limpia
       }
     }
-
   }
 
+  // --- Lógica de Navegación y Estado ---
+
+  // Maneja el clic en un botón de categoría principal (Nivel 1)
   onClickCategoriaPrincipal(nombreCategoria: string): void {
-    var categoriaSeleccionada: any;
+    let categoriaSeleccionada: any;
     if (this.categoriaPrincipalActiva === nombreCategoria) {
-      // Si se hizo click en la misma categoría activa, la desactiva y oculta todo lo siguiente
-      this.categoriaPrincipalActiva = null;
-      this.subCategoriasAMostrar = [];
-      this.subCategoriaActiva = null;
-      this.preguntasAMostrar = []; // Limpia las preguntas
-      this.preguntaActiva = null; // Limpia la pregunta activa
-      this.respuestaSeleccionada = null; // Limpia la respuesta
-      this.interfazActiva = false;
+      // Si se hizo click en la misma categoría activa, la desactiva (cierra toda la interfaz)
+      this.cerrarVentana();
     } else {
-      // Activa la nueva categoría principal
+      // Activa la nueva categoría principal y reinicia estados de subniveles
       this.categoriaPrincipalActiva = nombreCategoria;
+      this.subCategoriaActiva = null;
+      this.preguntasAMostrar = [];
+      this.preguntaActiva = null;
+      this.respuestaSeleccionada = null;
 
-      this.subCategoriaActiva = null; // Reinicia la subcategoría activa
-      this.preguntasAMostrar = []; // Limpia las preguntas anteriores
-      this.preguntaActiva = null; // Limpia la pregunta activa
-      this.respuestaSeleccionada = null; // Limpia la respuesta
-
+      // Filtra y carga las subcategorías correspondientes a la categoría seleccionada
       categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
       if (categoriaSeleccionada) {
         this.subCategoriasAMostrar = this.todosLosDetallesDeSubCategorias.filter(subCat =>
@@ -92,81 +110,84 @@ export class MenuDeroulantComponent implements OnInit {
       } else {
         this.subCategoriasAMostrar = [];
       }
+      // *** Lógica de desplazamiento automático para móviles ***
+      if (this.isMobile) {
+        // Un pequeño retardo para asegurar que el DOM se haya actualizado y el elemento sea visible
+        setTimeout(() => {
+          if (this.subCategoryContainer && this.subCategoryContainer.nativeElement) {
+            this.subCategoryContainer.nativeElement.scrollIntoView({
+              behavior: 'smooth', // Animación suave
+              block: 'start'      // Alinea el inicio del elemento con el inicio del viewport
+            });
+          } else {
+            console.warn('Scroll: subCategoryContainer.nativeElement NO ENCONTRADO para scrolling.');
+          }
+        }, 100); // 100ms de retardo
+      }
     }
-    console.log('Categoría principal activa:', this.categoriaPrincipalActiva);
-    console.log('Subcategorías a mostrar:', this.subCategoriasAMostrar);
   }
 
-  /**
-   * Maneja el click en un botón de subcategoría.
-   * Al hacer click, activa/desactiva la subcategoría y prepara las preguntas/respuestas relacionadas.
-   * También reinicia la selección de pregunta.
-   * @param codigoSubCategoria El código de la subcategoría clickeada.
-   */
+  // Maneja el clic en un botón de subcategoría (Nivel 2)
   onClickSubCategoria(codigoSubCategoria: string): void {
     if (this.subCategoriaActiva === codigoSubCategoria) {
-      // Si se hizo click en la misma subcategoría activa, la desactiva y oculta las preguntas
+      // Si se hizo click en la misma subcategoría activa, la desactiva
       this.subCategoriaActiva = null;
       this.preguntasAMostrar = [];
       this.preguntaActiva = null;
       this.respuestaSeleccionada = null;
     } else {
-      // Activa la nueva subcategoría
+      // Activa la nueva subcategoría y reinicia estados de preguntas
       this.subCategoriaActiva = codigoSubCategoria;
-      this.preguntaActiva = null; // Reinicia la pregunta activa
-      this.respuestaSeleccionada = null; // Reinicia la respuesta
+      this.preguntaActiva = null;
+      this.respuestaSeleccionada = null;
 
       // Filtra las preguntas/respuestas basándose en el código de la subcategoría activa
       this.preguntasAMostrar = this.todasLasPreguntasRespuestas.filter(pr =>
         pr.codigo === codigoSubCategoria
       );
     }
-    console.log('Subcategoría activa actual:', this.subCategoriaActiva);
-    console.log('Preguntas a mostrar:', this.preguntasAMostrar.map(p => p.pregunta));
   }
-  /**
-   * Maneja el click en un botón de pregunta.
-   * Al hacer click, activa/desactiva la pregunta y muestra/oculta su respuesta.
-   * @param pregunta El texto completo de la pregunta clickeada.
-   */
+
+  // Maneja el clic en un botón de pregunta (Nivel 3)
   onClickPregunta(pregunta: string): void {
     if (this.preguntaActiva === pregunta) {
       // Si se hizo click en la misma pregunta activa, la desactiva
       this.preguntaActiva = null;
       this.respuestaSeleccionada = null;
     } else {
-      // Activa la nueva pregunta
+      // Activa la nueva pregunta y busca su respuesta
       this.preguntaActiva = pregunta;
-      // Encuentra la respuesta correspondiente y la asigna
       const pregResp = this.preguntasAMostrar.find(pr => pr.pregunta === pregunta);
       this.respuestaSeleccionada = pregResp ? pregResp.respuesta : null;
     }
-    console.log('Pregunta activa actual:', this.preguntaActiva);
-    console.log('Respuesta seleccionada:', this.respuestaSeleccionada);
   }
-  /**
-   * Verifica si un botón de categoría principal debe tener la clase 'activo'.
-   * @param nombreCategoria El nombre de la categoría a verificar.
-   * @returns true si la categoría principal está activa, false en caso contrario.
-   */
+
+  // --- Funciones de Verificación de Estado (para aplicar clases CSS) ---
+
   esCategoriaPrincipalActiva(nombreCategoria: string): boolean {
     return this.categoriaPrincipalActiva === nombreCategoria;
   }
 
-  /**
-   * Verifica si un botón de subcategoría debe tener la clase 'activo'.
-   * @param codigoSubCategoria El código de la subcategoría a verificar.
-   * @returns true si la subcategoría está activa, false en caso contrario.
-   */
   esSubCategoriaActiva(codigoSubCategoria: string): boolean {
     return this.subCategoriaActiva === codigoSubCategoria;
   }
-  /**
-   * Verifica si un botón de pregunta debe tener la clase 'activo'.
-   * @param pregunta El texto de la pregunta a verificar.
-   * @returns true si la pregunta está activa, false en caso contrario.
-   */
+
   esPreguntaActiva(pregunta: string): boolean {
     return this.preguntaActiva === pregunta;
+  }
+
+  // --- Función para cerrar/resetear toda la interfaz ---
+  cerrarVentana(): void {
+    this.categoriaPrincipalActiva = null;
+    this.subCategoriaActiva = null;
+    this.preguntaActiva = null;
+    this.respuestaSeleccionada = null;
+    this.subCategoriasAMostrar = []; // Limpia las subcategorías
+    this.preguntasAMostrar = []; // Limpia las preguntas
+  }
+
+  // --- Función principal para verificar el tamaño de la pantalla ---
+  checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
   }
 }
