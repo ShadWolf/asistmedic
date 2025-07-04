@@ -1,0 +1,75 @@
+/* src/app/dialogs/age-confirmation-dialog/age-confirmation-dialog.component.css */
+
+/* Limpiar cualquier padding o margen que el diálogo pueda añadir por defecto */
+/* Esto asegura que la mat-card llene el espacio del diálogo */
+:host {
+  display: block;
+  /* Necesario para aplicar estilos directamente al host */
+  padding: 0;
+  margin: 0;
+}
+
+.age-confirmation-card {
+  width: 100%;
+  /* Asegura que la tarjeta ocupe el ancho disponible del diálogo */
+  height: 100%;
+  /* Asegura que la tarjeta ocupe el alto disponible */
+  box-shadow: none;
+  /* Opcional: Elimina la sombra por defecto de la tarjeta si el diálogo ya tiene una */
+  border-radius: 0;
+  /* Opcional: Elimina el border-radius de la tarjeta si el diálogo ya tiene uno */
+  padding: 0;
+  /* Asegura que no haya padding extra en la tarjeta */
+}
+
+/* Estilos para el ícono dentro del header de la tarjeta */
+.header-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  /* Tamaño del avatar de la tarjeta */
+  height: 48px;
+  background-color: rgba(63, 81, 181, 0.1);
+  /* Un fondo sutil para el ícono */
+  border-radius: 50%;
+}
+
+.header-icon {
+  font-size: 28px;
+  height: 28px;
+  width: 28px;
+  line-height: 1;
+  /* Para centrar el ícono */
+}
+
+/* Centrar el contenido de la tarjeta */
+mat-card-title,
+mat-card-subtitle,
+mat-card-content {
+  text-align: center;
+}
+
+mat-card-content p {
+  margin-top: 5%;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  /* Espacio debajo de los párrafos */
+}
+
+.disclaimer {
+  font-size: 0.85em;
+  color: #757575;
+}
+
+/* Ajustes para las acciones (botones) */
+mat-card-actions {
+  margin-top: 5%;
+  padding: 0 16px 16px;
+  /* Padding para los botones, ajusta según necesidad */
+  display: flex;
+  justify-content: center;
+  /* Centra los botones */
+  gap: 15px;
+  /* Espacio entre botones */
+}

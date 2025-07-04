@@ -1,0 +1,19 @@
+<mat-card class="age-confirmation-card">
+  <mat-card-header>
+    <div mat-card-avatar class="header-icon-container">
+      <mat-icon color="accent" class="header-icon">info</mat-icon>
+    </div>
+    <mat-card-title>Confirmación de Edad</mat-card-title>
+    <mat-card-subtitle>Acceso restringido</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>
+      Para continuar y acceder a todo el contenido de este sitio, debes <b>declarar que eres mayor de edad</b>.
+    </p>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" (click)="onYesClick()" cdkFocusInitial>Sí, soy mayor de edad</button>
+  </mat-card-actions>
+</mat-card>

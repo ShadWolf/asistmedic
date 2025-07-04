@@ -97,6 +97,7 @@ body {
   /* Espacio entre párrafos */
   color: #555;
   /* Color de texto ligeramente más claro */
+  text-align: justify;
 }
 
 /* Estilos para el llamado a la acción */
