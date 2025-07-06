@@ -259,6 +259,8 @@
   /* Padding general para el contenedor de pantalla completa */
   overflow-y: auto;
   /* Permite scroll vertical si el contenido excede la altura */
+  gap: 15px;
+  /* Añadido para asegurar espacio entre elementos en el contenedor de pantalla completa */
 }
 
 /* Clases para texto grande y grueso (Nivel de Preguntas/Respuestas) */
@@ -275,19 +277,37 @@
 
 /* Clase para el zoom en el último nivel (respuestas) - MODIFICADO */
 .zoom-effect {
-  transform-origin: center center;
-  /* El zoom se origina desde el centro */
-  transform: scale(1.1);
-  /* Nivel de zoom */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  /* Transición suave */
+  /* Eliminamos transform: scale, ya que no afecta el layout y causa superposición */
+  /* transform-origin: center center; */
+  /* transform: scale(1.1); */
+  transition: all 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  /* Transición suave para todos los cambios */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   /* Sombra más pronunciada al hacer zoom */
 
-  /* Ajuste crucial para que la caja no se desborde al hacer zoom */
-  /* Calcula el ancho máximo para que quepa dentro del viewport con padding */
+  /* Ajustes para que la caja ocupe más espacio real y empuje los elementos */
+  padding: 35px;
+  /* Aumenta el padding para un efecto de "zoom" que afecta el layout */
+  /* font-size se aplicará al p dentro de respuesta-area */
+
+  /* Asegura que el ancho máximo se respete después de los cambios de padding */
   max-width: calc(100vw - 40px);
   /* 100vw - (20px padding izquierdo + 20px padding derecho del full-screen-container) */
+}
+
+.respuesta-area p {
+  color: #34495e;
+  font-size: 1em;
+  /* Base font size */
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* Cuando .respuesta-area tiene .zoom-effect, el párrafo dentro también puede ajustar su tamaño */
+.respuesta-area.zoom-effect p {
+  font-size: 1.2em;
+  /* Aumentar el tamaño de la fuente del párrafo cuando está en zoom */
 }
 
 /* Ajusta cómo los botones de preguntas se comportan dentro de su contenedor */
