@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,7 @@ import { preguntasRespuestas } from '@data/pregunta-respuestas/';
   templateUrl: './menu-deroulant.component.html',
   styleUrl: './menu-deroulant.component.css'
 })
-export class MenuDeroulantComponent implements OnInit {
+export class MenuDeroulantComponent implements OnInit, OnDestroy {
 
   // Referencias a elementos del DOM para control de clics fuera de botones (para cerrar interfaz)
   @ViewChildren('botonCategorias, botonSubCategorias, botonPregResp, respTexto') private excludeButtons!: QueryList<ElementRef>;
@@ -41,6 +41,7 @@ export class MenuDeroulantComponent implements OnInit {
   preguntasAMostrar: pregRespMod[] = []; // Preguntas/respuestas filtradas
   preguntaActiva: string | null = null; // Pregunta activa (para mostrar su respuesta)
   respuestaSeleccionada: string | null = null; // Respuesta actual mostrándose
+  private synth: SpeechSynthesisUtterance | null = null;
 
   constructor() {
     // Inicializa el tamaño de pantalla al cargar el componente
@@ -51,7 +52,9 @@ export class MenuDeroulantComponent implements OnInit {
   ngOnInit(): void {
     // ngOnInit se ejecuta después del constructor. Útil para lógica de inicialización adicional.
   }
-
+  ngOnDestroy(): void {
+    this.detenerLectura(); // Asegura que la lectura se detenga al destruir el componente
+  }
   // --- Manejo de Eventos del Navegador ---
 
   // Escucha cambios en el tamaño de la ventana para actualizar `isMobile`
@@ -189,5 +192,58 @@ export class MenuDeroulantComponent implements OnInit {
   // --- Función principal para verificar el tamaño de la pantalla ---
   checkScreenSize(): void {
     this.isMobile = window.innerWidth <= 768;
+  }
+  leerPreguntaRespuesta(pregunta: string, respuesta: string): void {
+    // Primero, detiene cualquier lectura anterior para evitar superposiciones.
+    this.detenerLectura();
+
+    // Verifica si la API de síntesis de voz es compatible con el navegador.
+    if ('speechSynthesis' in window) {
+      const textoCompleto = `Pregunta: ${pregunta}. Respuesta: ${respuesta}.`;
+      this.synth = new SpeechSynthesisUtterance(textoCompleto);
+
+      // Configura el idioma a español. Puedes ajustar esto según tus necesidades (ej. 'es-MX', 'es-AR').
+      this.synth.lang = 'es-ES';
+
+      // Opcional: Configura la velocidad (rate) y el tono (pitch) de la voz.
+      this.synth.rate = 1; // Velocidad normal (1 es el valor predeterminado)
+      this.synth.pitch = 1; // Tono normal (1 es el valor predeterminado)
+
+      // Evento que se dispara cuando la lectura comienza.
+      this.synth.onstart = () => {
+        console.log('Comenzando a leer en voz alta...');
+        // Aquí podrías añadir lógica para mostrar un indicador de lectura activa en la UI.
+      };
+
+      // Evento que se dispara cuando la lectura finaliza.
+      this.synth.onend = () => {
+        console.log('Lectura finalizada.');
+        this.synth = null; // Limpia la referencia al objeto de síntesis una vez que ha terminado.
+      };
+
+      // Evento que se dispara si ocurre un error durante la síntesis de voz.
+      this.synth.onerror = (event: SpeechSynthesisErrorEvent) => {
+        console.error('Error en la síntesis de voz:', event.error);
+        this.synth = null; // Limpia la referencia en caso de error.
+        // Podrías mostrar un mensaje de error más amigable al usuario.
+        alert('Hubo un error al intentar leer en voz alta. Tu navegador podría no soportarlo o haber un problema.');
+      };
+
+      // Inicia la lectura del texto.
+      window.speechSynthesis.speak(this.synth);
+    } else {
+      // Alerta al usuario si el navegador no soporta la API Web Speech.
+      alert('Tu navegador no soporta la función de lectura en voz alta.');
+    }
+  }
+
+  /**
+   * Detiene cualquier lectura de Text-to-Speech que esté en curso.
+   */
+  detenerLectura(): void {
+    if (window.speechSynthesis && window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel(); // Cancela la síntesis de voz actual.
+    }
+    this.synth = null; // Asegura que la referencia al objeto de síntesis se limpie.
   }
 }

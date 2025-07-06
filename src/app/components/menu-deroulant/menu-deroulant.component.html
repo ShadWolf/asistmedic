@@ -51,6 +51,9 @@
 
                   <div *ngIf="esPreguntaActiva(pr.pregunta)" class="respuesta-area"
                     [class.zoom-effect]="esPreguntaActiva(pr.pregunta)">
+                    <button class="read-aloud-button" (click)="leerPreguntaRespuesta(pr.pregunta, pr.respuesta)">
+                      Leer en voz alta
+                    </button>
                     <p #respTexto>{{ pr.respuesta }}</p>
                   </div>
                 </ng-container>
