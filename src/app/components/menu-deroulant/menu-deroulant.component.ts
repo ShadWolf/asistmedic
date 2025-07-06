@@ -1,7 +1,8 @@
-import { Component, ElementRef, HostListener, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'; // Importa MatButtonToggleModule
 /*Strutura de datos */
 import { pregRespMod } from '@models/pregRespMod.model';
 import { categoriasMod } from '@models/categoriasMod.model';
@@ -14,14 +15,14 @@ import { preguntasRespuestas } from '@data/pregunta-respuestas/';
 @Component({
   selector: 'app-menu-deroulant',
   standalone: true,
-  imports: [MatListModule, MatButtonModule, CommonModule],
+  imports: [MatListModule, MatButtonModule, CommonModule, MatButtonToggleModule], // Agrega MatButtonToggleModule aquí
   templateUrl: './menu-deroulant.component.html',
   styleUrl: './menu-deroulant.component.css'
 })
 export class MenuDeroulantComponent implements OnInit, OnDestroy {
-
   // Referencias a elementos del DOM para control de clics fuera de botones (para cerrar interfaz)
-  @ViewChildren('botonCategorias, botonSubCategorias, botonPregResp, respTexto') private excludeButtons!: QueryList<ElementRef>;
+  // Se ha añadido 'botonLeerVozAlta' a la lista para que los clics en este botón no cierren la ventana.
+  @ViewChildren('botonCategorias, botonSubCategorias, botonPregResp, respTexto, botonLeerVozAlta') private excludeButtons!: QueryList<ElementRef>;
 
   // Referencia al contenedor de subcategorías para el scroll en móviles
   @ViewChild('subCategoryContainer') subCategoryContainer!: ElementRef;
@@ -41,7 +42,13 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
   preguntasAMostrar: pregRespMod[] = []; // Preguntas/respuestas filtradas
   preguntaActiva: string | null = null; // Pregunta activa (para mostrar su respuesta)
   respuestaSeleccionada: string | null = null; // Respuesta actual mostrándose
+
+  // Propiedad para almacenar la instancia de SpeechSynthesisUtterance
   private synth: SpeechSynthesisUtterance | null = null;
+  // Propiedades para controlar el estado de la lectura en voz alta y el contenido actual
+  currentPlayingQuestion: string | null = null; // Hecho público para acceso en el HTML
+  currentPlayingAnswer: string | null = null;   // Hecho público para acceso en el HTML
+  _window: Window = window;
 
   constructor() {
     // Inicializa el tamaño de pantalla al cargar el componente
@@ -52,9 +59,15 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // ngOnInit se ejecuta después del constructor. Útil para lógica de inicialización adicional.
   }
+
+  /**
+   * Ciclo de vida del componente: se ejecuta cuando el componente va a ser destruido.
+   * Se utiliza para detener cualquier síntesis de voz en curso.
+   */
   ngOnDestroy(): void {
     this.detenerLectura(); // Asegura que la lectura se detenga al destruir el componente
   }
+
   // --- Manejo de Eventos del Navegador ---
 
   // Escucha cambios en el tamaño de la ventana para actualizar `isMobile`
@@ -103,6 +116,7 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
       this.preguntasAMostrar = [];
       this.preguntaActiva = null;
       this.respuestaSeleccionada = null;
+      this.detenerLectura(); // Detener lectura al cambiar de categoría
 
       // Filtra y carga las subcategorías correspondientes a la categoría seleccionada
       categoriaSeleccionada = this.todasLasCategorias.find(cat => cat.nombre === nombreCategoria);
@@ -120,7 +134,7 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
           if (this.subCategoryContainer && this.subCategoryContainer.nativeElement) {
             this.subCategoryContainer.nativeElement.scrollIntoView({
               behavior: 'smooth', // Animación suave
-              block: 'start'      // Alinea el inicio del elemento con el inicio del viewport
+              block: 'start'       // Alinea el inicio del elemento con el inicio del viewport
             });
           } else {
             console.warn('Scroll: subCategoryContainer.nativeElement NO ENCONTRADO para scrolling.');
@@ -143,6 +157,7 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
       this.subCategoriaActiva = codigoSubCategoria;
       this.preguntaActiva = null;
       this.respuestaSeleccionada = null;
+      this.detenerLectura(); // Detener lectura al cambiar de subcategoría
 
       // Filtra las preguntas/respuestas basándose en el código de la subcategoría activa
       this.preguntasAMostrar = this.todasLasPreguntasRespuestas.filter(pr =>
@@ -162,6 +177,7 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
       this.preguntaActiva = pregunta;
       const pregResp = this.preguntasAMostrar.find(pr => pr.pregunta === pregunta);
       this.respuestaSeleccionada = pregResp ? pregResp.respuesta : null;
+      this.detenerLectura(); // Detener lectura al seleccionar una nueva pregunta
     }
   }
 
@@ -187,19 +203,36 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
     this.respuestaSeleccionada = null;
     this.subCategoriasAMostrar = []; // Limpia las subcategorías
     this.preguntasAMostrar = []; // Limpia las preguntas
+    this.detenerLectura(); // Detener lectura al cerrar la ventana
   }
 
   // --- Función principal para verificar el tamaño de la pantalla ---
   checkScreenSize(): void {
     this.isMobile = window.innerWidth <= 768;
   }
+
+  /**
+   * Lee en voz alta la pregunta y la respuesta proporcionadas utilizando la Web Speech API.
+   * Si ya está leyendo el mismo contenido, detiene la lectura.
+   * @param pregunta El texto de la pregunta a leer.
+   * @param respuesta El texto de la respuesta a leer.
+   */
   leerPreguntaRespuesta(pregunta: string, respuesta: string): void {
-    // Primero, detiene cualquier lectura anterior para evitar superposiciones.
+    const textoCompleto = `Pregunta: ${pregunta}. Respuesta: ${respuesta}.`;
+
+    // Si ya está leyendo y es el mismo contenido, detener la lectura actual.
+    if (window.speechSynthesis.speaking &&
+      this.currentPlayingQuestion === pregunta &&
+      this.currentPlayingAnswer === respuesta) {
+      this.detenerLectura();
+      return; // Salir después de detener.
+    }
+
+    // Detener cualquier lectura anterior si no es la misma o no está leyendo.
     this.detenerLectura();
 
     // Verifica si la API de síntesis de voz es compatible con el navegador.
     if ('speechSynthesis' in window) {
-      const textoCompleto = `Pregunta: ${pregunta}. Respuesta: ${respuesta}.`;
       this.synth = new SpeechSynthesisUtterance(textoCompleto);
 
       // Configura el idioma a español. Puedes ajustar esto según tus necesidades (ej. 'es-MX', 'es-AR').
@@ -212,28 +245,33 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
       // Evento que se dispara cuando la lectura comienza.
       this.synth.onstart = () => {
         console.log('Comenzando a leer en voz alta...');
-        // Aquí podrías añadir lógica para mostrar un indicador de lectura activa en la UI.
+        this.currentPlayingQuestion = pregunta; // Almacenar la pregunta actual
+        this.currentPlayingAnswer = respuesta;   // Almacenar la respuesta actual
       };
 
       // Evento que se dispara cuando la lectura finaliza.
       this.synth.onend = () => {
         console.log('Lectura finalizada.');
         this.synth = null; // Limpia la referencia al objeto de síntesis una vez que ha terminado.
+        this.currentPlayingQuestion = null; // Limpiar la pregunta actual
+        this.currentPlayingAnswer = null;   // Limpiar la respuesta actual
       };
 
       // Evento que se dispara si ocurre un error durante la síntesis de voz.
       this.synth.onerror = (event: SpeechSynthesisErrorEvent) => {
         console.error('Error en la síntesis de voz:', event.error);
         this.synth = null; // Limpia la referencia en caso de error.
-        // Podrías mostrar un mensaje de error más amigable al usuario.
-        alert('Hubo un error al intentar leer en voz alta. Tu navegador podría no soportarlo o haber un problema.');
+        this.currentPlayingQuestion = null; // Limpiar la pregunta actual
+        this.currentPlayingAnswer = null;   // Limpiar la respuesta actual
+        // Se ha reemplazado la alerta por un mensaje en consola.
+        console.error('Hubo un error al intentar leer en voz alta. Tu navegador podría no soportarlo o haber un problema.');
       };
 
       // Inicia la lectura del texto.
       window.speechSynthesis.speak(this.synth);
     } else {
-      // Alerta al usuario si el navegador no soporta la API Web Speech.
-      alert('Tu navegador no soporta la función de lectura en voz alta.');
+      // Se ha reemplazado la alerta por un mensaje en consola.
+      console.warn('Tu navegador no soporta la función de lectura en voz alta.');
     }
   }
 
@@ -245,5 +283,15 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
       window.speechSynthesis.cancel(); // Cancela la síntesis de voz actual.
     }
     this.synth = null; // Asegura que la referencia al objeto de síntesis se limpie.
+    this.currentPlayingQuestion = null; // Limpiar la pregunta actual
+    this.currentPlayingAnswer = null;   // Limpiar la respuesta actual
   }
+  getButtonText(pregunta: string, respuesta: string): string {
+    if (this._window.speechSynthesis.speaking &&
+      this.currentPlayingQuestion !== pregunta &&
+      this.currentPlayingAnswer !== respuesta) {
+      return 'Detener lectura';
+    }
+    return 'Leer en voz alta';
+  } // Agregado OnDestroy
 }
