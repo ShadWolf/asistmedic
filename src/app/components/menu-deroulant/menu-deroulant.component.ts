@@ -221,7 +221,7 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
     const textoCompleto = `Pregunta: ${pregunta}. Respuesta: ${respuesta}.`;
 
     // Si ya está leyendo y es el mismo contenido, detener la lectura actual.
-    if (window.speechSynthesis.speaking &&
+    if (!!(window.speechSynthesis.speaking) &&
       this.currentPlayingQuestion === pregunta &&
       this.currentPlayingAnswer === respuesta) {
       this.detenerLectura();
@@ -269,9 +269,6 @@ export class MenuDeroulantComponent implements OnInit, OnDestroy {
 
       // Inicia la lectura del texto.
       window.speechSynthesis.speak(this.synth);
-    } else {
-      // Se ha reemplazado la alerta por un mensaje en consola.
-      console.warn('Tu navegador no soporta la función de lectura en voz alta.');
     }
   }
 

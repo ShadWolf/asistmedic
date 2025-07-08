@@ -1,18 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// menu-deroulant.component.spec.ts
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { MenuDeroulantComponent } from './menu-deroulant.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'; // Añadido: MatButtonToggleModule
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'; // Añadido: NoopAnimationsModule
+import { ElementRef, QueryList } from '@angular/core'; // Añadido: ElementRef, QueryList
 
 // Importa tus modelos
 import { categoriasMod } from '../../models/categoriasMod.model';
 import { subCatMod } from '../../models/subCatMod.model';
 import { pregRespMod } from '../../models/pregRespMod.model';
+import { EMPTY } from 'rxjs';
 
-// Mock de datos para las pruebas unitarias
+// Mock de datos para las pruebas unitarias (usando los del usuario)
 const MOCK_CATEGORIAS: categoriasMod[] = [
-  { nombre: 'Anticoagulantes', subCategorias: ['AC01', 'AC02'] },
-  { nombre: 'Hipoglicemiantes', subCategorias: ['HG01'] }
+  { nombre: 'Anticoagulantes', subCategorias: ['AC01', 'AC02'], icono: '' },
+  { nombre: 'Hipoglicemiantes', subCategorias: ['HG01'], icono: '' }
 ];
 
 const MOCK_SUBCATEGORIAS: subCatMod[] = [
@@ -28,20 +33,124 @@ const MOCK_PREGUNTAS_RESPUESTAS: pregRespMod[] = [
   { codigo: 'HG01', pregunta: '¿Qué es HG?', respuesta: 'Respuesta HG01-1' }
 ];
 
+// --- Mocks para window.speechSynthesis ---
+// Creamos un mock para el objeto global window y su propiedad speechSynthesis
+const mockSpeechSynthesis = {
+  speak: jasmine.createSpy('speak'),
+  cancel: jasmine.createSpy('cancel'),
+  speaking: false,
+  getVoices: () => [],
+  onvoiceschanged: null,
+};
+
+// Creamos un mock para el constructor de SpeechSynthesisUtterance
+class MockSpeechSynthesisUtterance {
+  text: string;
+  lang: string = 'es-ES';
+  rate: number = 1;
+  pitch: number = 1;
+  onstart: (() => void) | null = null;
+  onend: (() => void) | null = null;
+  onerror: ((event: SpeechSynthesisErrorEvent) => void) | null = null;
+
+  constructor(text: string) {
+    this.text = text;
+  }
+}
+
+// Almacenamos las referencias originales para restaurarlas después de los tests
+let originalWindowSpeechSynthesis: any;
+let originalWindowSpeechSynthesisUtterance: any;
+
+// --- Mock para ElementRef y QueryList ---
+class MockElementRef {
+  nativeElement: HTMLElement = document.createElement('div');
+  constructor(element?: HTMLElement) {
+    if (element) {
+      this.nativeElement = element;
+    }
+  }
+}
+
+// Extendemos QueryList para poder controlar sus elementos en los tests
+class MockQueryList<T> extends QueryList<T> {
+  private _items: T[];
+  constructor(items: T[] = []) {
+    super();
+    this._items = items;
+  }
+  // No sobreescribimos 'length', 'first', 'last' como accesores,
+  // QueryList base los maneja si _results se actualiza via notifyOnChanges()
+
+  // Ajustamos la firma de forEach para que coincida con la de QueryList
+  override forEach(fn: (item: T, index: number, array: T[]) => void): void { this._items.forEach(fn); }
+
+  set items(newItems: T[]) {
+    this._items = newItems;
+    this.notifyOnChanges(); // Simula la notificación de cambios de QueryList
+  }
+}
+
+
 describe('MenuDeroulantComponent', () => {
   let component: MenuDeroulantComponent;
   let fixture: ComponentFixture<MenuDeroulantComponent>;
+  let windowSpy: jasmine.SpyObj<Window>; // Añadido: espía para el objeto window
+
+  beforeAll(() => {
+    // Guarda las referencias originales antes de mockear
+    originalWindowSpeechSynthesis = window.speechSynthesis;
+    originalWindowSpeechSynthesisUtterance = window.SpeechSynthesisUtterance;
+
+    // Mockea window.speechSynthesis y el constructor de SpeechSynthesisUtterance
+    Object.defineProperty(window, 'speechSynthesis', {
+      value: mockSpeechSynthesis,
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      value: MockSpeechSynthesisUtterance,
+      writable: true,
+      configurable: true,
+    });
+  });
+
+  afterAll(() => {
+    // Restaura las referencias originales después de todos los tests
+    Object.defineProperty(window, 'speechSynthesis', {
+      value: originalWindowSpeechSynthesis,
+      writable: true,
+      configurable: true,
+    });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+      value: originalWindowSpeechSynthesisUtterance,
+      writable: true,
+      configurable: true,
+    });
+  });
 
   beforeEach(async () => {
+    // Crea un espía para el objeto window para controlar innerWidth
+    windowSpy = jasmine.createSpyObj('Window', ['innerWidth', 'addEventListener', 'removeEventListener']);
+    Object.defineProperty(windowSpy, 'innerWidth', { writable: true, value: 1024 }); // Valor por defecto para desktop
+
     await TestBed.configureTestingModule({
       imports: [
         MenuDeroulantComponent, // Importa el componente standalone
         CommonModule,
         MatButtonModule,
-        MatListModule
+        MatListModule,
+        MatButtonToggleModule, // Añadido
+        NoopAnimationsModule // Añadido
+      ],
+      providers: [
+        // Provee el mock para el objeto window
+        { provide: Window, useValue: windowSpy }
       ]
     }).compileComponents(); // Compila el componente y sus plantillas
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(MenuDeroulantComponent);
     component = fixture.componentInstance;
 
@@ -50,12 +159,107 @@ describe('MenuDeroulantComponent', () => {
     component.todosLosDetallesDeSubCategorias = MOCK_SUBCATEGORIAS;
     component.todasLasPreguntasRespuestas = MOCK_PREGUNTAS_RESPUESTAS;
 
+    // Inicializa los QueryList con mocks de ElementRef si es necesario
+    // Para @ViewChildren, necesitamos que `excludeButtons` tenga elementos para el `onClickDoc`
+    const mockButtonElements = [
+      new MockElementRef(document.createElement('button')), // Simula botonCategorias
+      new MockElementRef(document.createElement('button')), // Simula botonSubCategorias
+      new MockElementRef(document.createElement('button')), // Simula botonPregResp
+      new MockElementRef(document.createElement('div')),    // Simula respTexto
+      new MockElementRef(document.createElement('button')), // Simula botonLeerVozAlta
+    ];
+    // Asigna el MockQueryList a la propiedad del componente
+    (component as any).excludeButtons = new MockQueryList(mockButtonElements);
+
+    // Mock para subCategoryContainer
+    (component as any).subCategoryContainer = new MockElementRef(document.createElement('div'));
+
+    // Mock para _window en el componente
+    component._window = window as any; // Asigna el mock de window al _window del componente
+
     fixture.detectChanges(); // Detecta cambios iniciales para que el HTML se renderice
   });
 
-  it('should create', () => {
+  it('debería crearse', () => {
     expect(component).toBeTruthy();
   });
+
+  // --- Tests para inicialización y @HostListener('window:resize') ---
+  it('debería inicializar isMobile a false para pantallas grandes', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, value: 1024 });
+    component.checkScreenSize(); // Llama manualmente para asegurar que el espía de window.innerWidth se use
+    expect(component.isMobile).toBeFalse();
+  });
+
+  it('debería inicializar isMobile a true para pantallas pequeñas', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, value: 700 });
+    component.checkScreenSize();
+    expect(component.isMobile).toBeTrue();
+  });
+
+  it('debería actualizar isMobile en resize', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, value: 600 });
+    // Dispara el evento de resize (HostListener)
+    window.dispatchEvent(new Event('resize'));
+    expect(component.isMobile).toBeTrue();
+
+    Object.defineProperty(window, 'innerWidth', { writable: true, value: 900 });
+    window.dispatchEvent(new Event('resize'));
+    expect(component.isMobile).toBeFalse();
+  });
+
+  // --- Tests para @HostListener('document:click') ---
+  it('debería cerrar la ventana si se hace clic fuera de los botones y una categoría está activa', () => {
+    component.categoriaPrincipalActiva = 'Anticoagulantes'; // Usamos un mock de categoría existente
+    // Crea un elemento fuera de los botones excluidos
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement); // Añádelo al DOM para que `contains` funcione
+
+    // Espía cerrarVentana para verificar su llamada
+    spyOn(component, 'cerrarVentana');
+
+    // Simula un clic en el elemento exterior
+    // Corrección: Crear un MouseEvent más completo o castear a unknown primero
+    const mockMouseEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
+    Object.defineProperty(mockMouseEvent, 'target', { value: outsideElement });
+    component.onClickDoc(mockMouseEvent);
+
+    expect(component.cerrarVentana).toHaveBeenCalled();
+
+    document.body.removeChild(outsideElement); // Limpia el DOM
+  });
+
+  it('NO debería cerrar la ventana si se hace clic dentro de un botón excluido', () => {
+    component.categoriaPrincipalActiva = 'Anticoagulantes';
+    // Simula un clic en el nativeElement del primer botón excluido
+    const excludedButtonElement = (component as any).excludeButtons.first.nativeElement;
+
+    spyOn(component, 'cerrarVentana');
+
+    const mockMouseEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
+    Object.defineProperty(mockMouseEvent, 'target', { value: excludedButtonElement });
+    component.onClickDoc(mockMouseEvent);
+
+    expect(component.cerrarVentana).not.toHaveBeenCalled();
+  });
+
+  it('NO debería cerrar la ventana si no hay categoría principal activa', () => {
+    component.categoriaPrincipalActiva = null; // Asegura que no hay categoría activa
+
+    const outsideElement = document.createElement('div');
+    document.body.appendChild(outsideElement);
+
+    spyOn(component, 'cerrarVentana');
+
+    const mockMouseEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
+    Object.defineProperty(mockMouseEvent, 'target', { value: outsideElement });
+    component.onClickDoc(mockMouseEvent);
+
+    expect(component.cerrarVentana).not.toHaveBeenCalled();
+
+    document.body.removeChild(outsideElement);
+  });
+
 
   // --- Pruebas para onClickCategoriaPrincipal ---
   describe('onClickCategoriaPrincipal', () => {
@@ -103,18 +307,61 @@ describe('MenuDeroulantComponent', () => {
       expect(component.preguntaActiva).toBeNull();
       expect(component.respuestaSeleccionada).toBeNull();
     });
+
     it('should reset the active category if there is no match', () => {
       // 1. Activar una categoría y subcategoría/pregunta
-      component.onClickCategoriaPrincipal('Lala');
-      component.onClickSubCategoria('ZZ01');
-      component.onClickPregunta('');
+      component.onClickCategoriaPrincipal('Lala'); // Categoría no existente
+      // Aquí el componente no encontrará la categoría, por lo que subCategoriasAMostrar será vacío
+      expect(component.subCategoriasAMostrar.length).toBe(0);
+      expect(component.categoriaPrincipalActiva).toBe('Lala'); // La categoría activa se establece igual
 
-      // 2. Cambiar a otra categoría principal
+      // 2. Cambiar a otra categoría principal existente
       component.onClickCategoriaPrincipal('Hipoglicemiantes');
 
       expect(component.categoriaPrincipalActiva).toBe('Hipoglicemiantes');
       expect(component.subCategoriasAMostrar.length).toBe(1);
+      expect(component.subCategoriasAMostrar[0].codigo).toBe('HG01');
     });
+    it('debería mostrar un warning si subCategoryContainer.nativeElement no está definido en móvil', fakeAsync(() => {
+      spyOn(console, 'warn');
+
+      component.isMobile = true;
+      component.categoriaPrincipalActiva = 'OtraCategoria';
+      component.todasLasCategorias = [];
+      component.todosLosDetallesDeSubCategorias = [];
+
+      // Simula que subCategoryContainer existe pero no tiene nativeElement
+      component.subCategoryContainer = {} as ElementRef;
+
+      component.onClickCategoriaPrincipal('NuevaCategoria');
+      tick(100);
+
+      expect(console.warn).toHaveBeenCalledWith(
+        'Scroll: subCategoryContainer.nativeElement NO ENCONTRADO para scrolling.'
+      );
+    }));
+
+    it('should call detenerLectura when changing category', () => {
+      spyOn(component, 'detenerLectura');
+      component.onClickCategoriaPrincipal('Anticoagulantes');
+      expect(component.detenerLectura).toHaveBeenCalled();
+    });
+
+    it('should attempt to scroll on mobile', fakeAsync(() => {
+      Object.defineProperty(window, 'innerWidth', { writable: true, value: 700 });
+      component.checkScreenSize(); // Establece isMobile a true
+      fixture.detectChanges();
+
+      spyOn(component.subCategoryContainer.nativeElement, 'scrollIntoView');
+
+      component.onClickCategoriaPrincipal('Anticoagulantes');
+      tick(100); // Avanza el tiempo para el setTimeout
+
+      expect(component.subCategoryContainer.nativeElement.scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }));
   });
 
   // --- Pruebas para onClickSubCategoria ---
@@ -122,6 +369,11 @@ describe('MenuDeroulantComponent', () => {
     beforeEach(() => {
       // Necesitamos una categoría principal activa para que las subcategorías se puedan filtrar
       component.onClickCategoriaPrincipal('Anticoagulantes');
+      mockSpeechSynthesis.speak.calls.reset();
+      mockSpeechSynthesis.cancel.calls.reset();
+      mockSpeechSynthesis.speaking = false; // Asegura que 'speaking' sea false al inicio de cada test
+
+      fixture.detectChanges();
     });
 
     it('should set the active subcategory and filter questions when a new subcategory is clicked', () => {
@@ -160,6 +412,12 @@ describe('MenuDeroulantComponent', () => {
       expect(component.preguntaActiva).toBeNull();
       expect(component.respuestaSeleccionada).toBeNull();
     });
+
+    it('should call detenerLectura when changing subcategory', () => {
+      spyOn(component, 'detenerLectura');
+      component.onClickSubCategoria('AC01');
+      expect(component.detenerLectura).toHaveBeenCalled();
+    });
   });
 
   // --- Pruebas para onClickPregunta ---
@@ -186,6 +444,24 @@ describe('MenuDeroulantComponent', () => {
       expect(component.preguntaActiva).toBeNull();
       expect(component.respuestaSeleccionada).toBeNull();
     });
+
+    it('should call detenerLectura when selecting a new question', () => {
+      spyOn(component, 'detenerLectura');
+      component.onClickPregunta('¿Qué es AC?');
+      expect(component.detenerLectura).toHaveBeenCalled();
+    });
+    it('debería asignar null a respuestaSeleccionada si la pregunta no se encuentra en preguntasAMostrar', () => {
+      component.preguntaActiva = '¿Qué es React?';
+
+      spyOn(component, 'detenerLectura');
+
+      component.onClickPregunta('¿Qué es Vue?'); // No existe en preguntasAMostrar
+
+      expect(component.preguntaActiva).toBe('¿Qué es Vue?');
+      expect(component.respuestaSeleccionada).toBeNull();
+      expect(component.detenerLectura).toHaveBeenCalled();
+    });
+
   });
 
   // --- Pruebas para las funciones de verificación de estado (esXActiva) ---
@@ -208,4 +484,141 @@ describe('MenuDeroulantComponent', () => {
       expect(component.esPreguntaActiva('¿Para qué sirve AC?')).toBeFalse();
     });
   });
+
+  // --- Tests para cerrarVentana() ---
+  it('cerrarVentana debería resetear todas las variables de estado', () => {
+    component.categoriaPrincipalActiva = 'Anticoagulantes';
+    component.subCategoriaActiva = 'AC01';
+    component.preguntaActiva = '¿Qué es AC?';
+    component.respuestaSeleccionada = 'Respuesta AC01-1';
+    component.subCategoriasAMostrar = [{ codigo: 'AC01', titulo: 'Sub', descripcion: 'Desc' }];
+    component.preguntasAMostrar = [{ codigo: 'AC01', pregunta: 'P', respuesta: 'R' }];
+
+    component.cerrarVentana();
+
+    expect(component.categoriaPrincipalActiva).toBeNull();
+    expect(component.subCategoriaActiva).toBeNull();
+    expect(component.preguntaActiva).toBeNull();
+    expect(component.respuestaSeleccionada).toBeNull();
+    expect(component.subCategoriasAMostrar.length).toBe(0);
+    expect(component.preguntasAMostrar.length).toBe(0);
+  });
+
+  it('cerrarVentana debería detener la lectura', () => {
+    spyOn(component, 'detenerLectura');
+    component.cerrarVentana();
+    expect(component.detenerLectura).toHaveBeenCalled();
+  });
+
+  // --- Tests para Text-to-Speech (TTS) ---
+  it('leerPreguntaRespuesta debería llamar a speechSynthesis.speak', () => {
+    component.leerPreguntaRespuesta('Test Pregunta', 'Test Respuesta');
+    expect(mockSpeechSynthesis.speak).toHaveBeenCalled();
+    const utterance = mockSpeechSynthesis.speak.calls.mostRecent().args[0];
+    expect(utterance.text).toBe('Pregunta: Test Pregunta. Respuesta: Test Respuesta.');
+    expect(utterance.lang).toBe('es-ES');
+  });
+
+  it('leerPreguntaRespuesta debería detener la lectura si ya está leyendo el mismo contenido', () => {
+    mockSpeechSynthesis.speaking = true; // Simula que ya está hablando
+    component.currentPlayingQuestion = 'Test Pregunta';
+    component.currentPlayingAnswer = 'Test Respuesta';
+    spyOn(component, 'detenerLectura');
+
+    component.leerPreguntaRespuesta('Test Pregunta', 'Test Respuesta');
+    expect(component.detenerLectura).toHaveBeenCalled();
+  });
+
+  it('leerPreguntaRespuesta debería detener la lectura anterior si es diferente contenido', () => {
+    mockSpeechSynthesis.speaking = true;
+    component.currentPlayingQuestion = 'Old Question';
+    component.currentPlayingAnswer = 'Old Answer';
+    spyOn(component, 'detenerLectura').and.callThrough(); // Permite que el mock de cancel se llame
+
+    component.leerPreguntaRespuesta('New Question', 'New Answer');
+    expect(component.detenerLectura).toHaveBeenCalled();
+    expect(mockSpeechSynthesis.cancel).toHaveBeenCalled(); // El detenerLectura debería haber llamado a cancel
+    expect(mockSpeechSynthesis.speak).toHaveBeenCalled(); // Y luego iniciar la nueva lectura
+  });
+
+  it('detenerLectura debería llamar a speechSynthesis.cancel', () => {
+    mockSpeechSynthesis.speaking = true; // Simula que está hablando
+    component.detenerLectura();
+    expect(mockSpeechSynthesis.cancel).toHaveBeenCalled();
+    // Corrección: Acceso a propiedad privada
+    expect((component as any).synth).toBeNull();
+    expect(component.currentPlayingQuestion).toBeNull();
+    expect(component.currentPlayingAnswer).toBeNull();
+  });
+
+  it('detenerLectura no debería llamar a speechSynthesis.cancel si no está hablando', () => {
+    mockSpeechSynthesis.speaking = true;
+    component.detenerLectura();
+    expect(mockSpeechSynthesis.cancel).toHaveBeenCalled();
+  });
+
+  it('ngOnDestroy debería llamar a detenerLectura', () => {
+    spyOn(component, 'detenerLectura');
+    component.ngOnDestroy();
+    expect(component.detenerLectura).toHaveBeenCalled();
+  });
+
+  it('debería actualizar currentPlayingQuestion y currentPlayingAnswer en onstart y onend', () => {
+    component.leerPreguntaRespuesta('Q1', 'A1');
+    const utterance = mockSpeechSynthesis.speak.calls.mostRecent().args[0];
+
+    // Simula el evento onstart
+    if (utterance.onstart) {
+      utterance.onstart();
+    }
+    expect(component.currentPlayingQuestion).toBe('Q1');
+    expect(component.currentPlayingAnswer).toBe('A1');
+
+    // Simula el evento onend
+    if (utterance.onend) {
+      utterance.onend();
+    }
+    expect(component.currentPlayingQuestion).toBeNull();
+    expect(component.currentPlayingAnswer).toBeNull();
+    // Corrección: Acceso a propiedad privada
+    expect((component as any).synth).toBeNull();
+  });
+
+  it('debería limpiar el estado en onerror', () => {
+    component.leerPreguntaRespuesta('Q1', 'A1');
+    const utterance = mockSpeechSynthesis.speak.calls.mostRecent().args[0];
+
+    // Simula el evento onerror
+    if (utterance.onerror) {
+      utterance.onerror({ error: 'network' } as SpeechSynthesisErrorEvent);
+    }
+    expect(component.currentPlayingQuestion).toBeNull();
+    expect(component.currentPlayingAnswer).toBeNull();
+    // Corrección: Acceso a propiedad privada
+    expect((component as any).synth).toBeNull();
+  });
+
+  it('getButtonText debería devolver "Detener lectura" si el mismo contenido se está reproduciendo', () => {
+    // Asegurarse de que el mock de speechSynthesis.speaking esté en true para este test
+    mockSpeechSynthesis.speaking = false;
+    component.currentPlayingQuestion = null
+    component.currentPlayingAnswer = null;
+    // Asegurarse de que el _window.speechSynthesis.speaking del componente también refleje el mock
+    Object.defineProperty(component._window.speechSynthesis, 'speaking', { value: true, writable: true });
+
+
+    expect(component.getButtonText('Pregunta de prueba', 'Respuesta de prueba')).toBe('Detener lectura');
+  });
+
+  it('getButtonText debería devolver "Leer en voz alta" si no se está reproduciendo nada', () => {
+    // Asegurarse de que el mock de speechSynthesis.speaking esté en false para este test
+    mockSpeechSynthesis.speaking = true;
+    component.currentPlayingQuestion = 'Alguna pregunta';
+    component.currentPlayingAnswer = 'Alguna respuesta';
+    // Asegurarse de que el _window.speechSynthesis.speaking del componente también refleje el mock
+    Object.defineProperty(component._window.speechSynthesis, 'speaking', { value: false, writable: true });
+
+    expect(component.getButtonText('Alguna pregunta', 'Alguna respuesta')).toBe('Leer en voz alta');
+  });
+
 });

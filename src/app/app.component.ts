@@ -30,15 +30,6 @@ export class AppComponent implements OnInit {
       disableClose: true,
       panelClass: 'age-confirmation-dialog-panel' // Clase para estilos globales del contenedor del diálogo
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('El diálogo se cerró. Resultado:', result);
-      if (result) {
-        console.log('El usuario confirmó ser mayor de edad.');
-      } else {
-        console.log('El usuario no confirmó ser mayor de edad o cerró el diálogo con "No".');
-      }
-    });
   }
 }
 

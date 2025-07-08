@@ -45,11 +45,6 @@
   font-style: italic;
 }
 
-/* Contenedor principal de subcategorías dentro de la columna derecha */
-.subcategorias-main-container {
-  /* No necesita bordes o fondos extra si ya los tiene column-right */
-}
-
 .subcategorias-main-container h4,
 .preguntas-respuestas-container h4 {
   color: #555;
