@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/ShadWolf/asistmedic/badge.svg?branch=main)](https://coveralls.io/github/ShadWolf/asistmedic?branch=main)
 # Asistmedic
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
