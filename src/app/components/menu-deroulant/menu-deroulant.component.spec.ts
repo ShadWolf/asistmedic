@@ -209,24 +209,29 @@ describe('MenuDeroulantComponent', () => {
   });
 
   // --- Tests para @HostListener('document:click') ---
-  it('debería cerrar la ventana si se hace clic fuera de los botones y una categoría está activa', () => {
-    component.categoriaPrincipalActiva = 'Anticoagulantes'; // Usamos un mock de categoría existente
-    // Crea un elemento fuera de los botones excluidos
+
+  it('debería cerrar la ventana (el popup de preguntas/respuestas) si se hace clic fuera de los botones y una subcategoría está activa', () => {
+    // 1. Configura el estado para que la "ventana emergente" esté activa
+    component.categoriaPrincipalActiva = 'Anticoagulantes'; // Una categoría activa
+    component.subCategoriaActiva = 'SUB_CAT_MOCK'; // <--- CLAVE: Una subcategoría activa (simulando que el popup está abierto)
+
+    // 2. Crea un elemento fuera de los botones excluidos
     const outsideElement = document.createElement('div');
     document.body.appendChild(outsideElement); // Añádelo al DOM para que `contains` funcione
 
-    // Espía cerrarVentana para verificar su llamada
+    // 3. Espía cerrarVentana para verificar su llamada
     spyOn(component, 'cerrarVentana');
 
-    // Simula un clic en el elemento exterior
-    // Corrección: Crear un MouseEvent más completo o castear a unknown primero
+    // 4. Simula un clic en el elemento exterior
     const mockMouseEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
     Object.defineProperty(mockMouseEvent, 'target', { value: outsideElement });
     component.onClickDoc(mockMouseEvent);
 
+    // 5. Verifica que cerrarVentana fue llamado
     expect(component.cerrarVentana).toHaveBeenCalled();
 
-    document.body.removeChild(outsideElement); // Limpia el DOM
+    // 6. Limpia el DOM después del test
+    document.body.removeChild(outsideElement);
   });
 
   it('NO debería cerrar la ventana si se hace clic dentro de un botón excluido', () => {
@@ -486,7 +491,8 @@ describe('MenuDeroulantComponent', () => {
   });
 
   // --- Tests para cerrarVentana() ---
-  it('cerrarVentana debería resetear todas las variables de estado', () => {
+  it('cerrarVentana debería resetear el estado de la subcategoría activa, preguntas y respuestas, pero mantener la categoría principal y las subcategorías a mostrar', () => {
+    // Configura el estado inicial con valores
     component.categoriaPrincipalActiva = 'Anticoagulantes';
     component.subCategoriaActiva = 'AC01';
     component.preguntaActiva = '¿Qué es AC?';
@@ -494,14 +500,22 @@ describe('MenuDeroulantComponent', () => {
     component.subCategoriasAMostrar = [{ codigo: 'AC01', titulo: 'Sub', descripcion: 'Desc' }];
     component.preguntasAMostrar = [{ codigo: 'AC01', pregunta: 'P', respuesta: 'R' }];
 
+    // Guarda una referencia a la longitud inicial de subCategoriasAMostrar
+    const initialSubCategoriasAMostrarLength = component.subCategoriasAMostrar.length;
+    const initialCategoriaPrincipalActiva = component.categoriaPrincipalActiva;
+
+    // Llama a la función a testear
     component.cerrarVentana();
 
-    expect(component.categoriaPrincipalActiva).toBeNull();
+    // Verifica que las variables que DEBEN resetearse, se reseteen a null/vacío
     expect(component.subCategoriaActiva).toBeNull();
     expect(component.preguntaActiva).toBeNull();
     expect(component.respuestaSeleccionada).toBeNull();
-    expect(component.subCategoriasAMostrar.length).toBe(0);
     expect(component.preguntasAMostrar.length).toBe(0);
+
+    // Verifica que las variables que NO DEBEN resetearse, mantengan su valor
+    expect(component.categoriaPrincipalActiva).toBe(initialCategoriaPrincipalActiva); // Debe mantener el valor
+    expect(component.subCategoriasAMostrar.length).toBe(initialSubCategoriasAMostrarLength); // No debe cambiar
   });
 
   it('cerrarVentana debería detener la lectura', () => {
@@ -599,15 +613,32 @@ describe('MenuDeroulantComponent', () => {
   });
 
   it('getButtonText debería devolver "Detener lectura" si el mismo contenido se está reproduciendo', () => {
-    // Asegurarse de que el mock de speechSynthesis.speaking esté en true para este test
+    const testPregunta = 'Pregunta de prueba';
+    const testRespuesta = 'Respuesta de prueba';
+
+    // Configura el mock de speechSynthesis para que `speaking` sea true
+    mockSpeechSynthesis.speaking = true;
+
+    // Configura las propiedades del componente para que coincidan con el contenido que se "está reproduciendo"
+    component.currentPlayingQuestion = testPregunta;
+    component.currentPlayingAnswer = testRespuesta;
+
+    // Llama a la función y verifica el resultado
+    expect(component.getButtonText(testPregunta, testRespuesta)).toBe('Detener lectura');
+  });
+
+  it('getButtonText debería devolver "Leer en voz alta" si no se está reproduciendo el mismo contenido', () => {
+    // Caso 1: No se está reproduciendo nada
     mockSpeechSynthesis.speaking = false;
-    component.currentPlayingQuestion = null
+    component.currentPlayingQuestion = null;
     component.currentPlayingAnswer = null;
-    // Asegurarse de que el _window.speechSynthesis.speaking del componente también refleje el mock
-    Object.defineProperty(component._window.speechSynthesis, 'speaking', { value: true, writable: true });
+    expect(component.getButtonText('Pregunta 1', 'Respuesta 1')).toBe('Leer en voz alta');
 
-
-    expect(component.getButtonText('Pregunta de prueba', 'Respuesta de prueba')).toBe('Detener lectura');
+    // Caso 2: Se está reproduciendo algo diferente
+    mockSpeechSynthesis.speaking = true;
+    component.currentPlayingQuestion = 'Otra pregunta';
+    component.currentPlayingAnswer = 'Otra respuesta';
+    expect(component.getButtonText('Pregunta 1', 'Respuesta 1')).toBe('Leer en voz alta');
   });
 
   it('getButtonText debería devolver "Leer en voz alta" si no se está reproduciendo nada', () => {

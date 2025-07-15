@@ -38,7 +38,8 @@
             <div *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="preguntas-respuestas-container"
               [class.full-screen-container]="esSubCategoriaActiva(subCategoria.codigo)"
               [class.large-bold-text]="esSubCategoriaActiva(subCategoria.codigo)">
-              <button *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="close-button" (click)="cerrarVentana()">
+              <button #btnVolver *ngIf="esSubCategoriaActiva(subCategoria.codigo)" class="close-button"
+                (click)="cerrarVentana()">
                 ← VOLVER
               </button>
               <h4>Elige tu pregunta: </h4>
