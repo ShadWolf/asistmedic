@@ -27,11 +27,12 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/asistmedic'),
       subdir: '.',
       reporters: [
+        { type: 'html'},
         { type: 'lcov', subdir: '.' }, // ← ¡Este es el que genera lcov.info!
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'kjhtml', 'coverage'],
     browsers: ['Chrome'],
     restartOnFileChange: true
   });

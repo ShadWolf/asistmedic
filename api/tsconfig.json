@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es2020", // O una versión más reciente de ECMAScript
+    "module": "commonjs", // O "esnext" si usas módulos ES en Node.js
+    "lib": ["es2020"],
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist", // Directorio de salida para la compilación de la función
+    "rootDir": "./",
+    "types": ["node"] // Importante para tipos de Node.js
+  },
+  "include": ["./**/*.ts"], // Incluye todos los archivos .ts en la carpeta api
+  "exclude": ["node_modules"]
+}
